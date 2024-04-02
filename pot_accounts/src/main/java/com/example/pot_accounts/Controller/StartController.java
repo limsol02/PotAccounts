@@ -18,7 +18,7 @@ public class StartController {
     @Autowired(required = false)
     private StartService service;
     @GetMapping("/emp")
-    //@CrossOrigin(origins = "http://localhost:3000")
+    //@CrossOrigin(origins = "http://localhost:3000") 인텔리 커밋 테스트
     public ResponseEntity<?> emp() {
         List<Emp> empInfo = service.empInfo();
         return ResponseEntity.ok(empInfo);
