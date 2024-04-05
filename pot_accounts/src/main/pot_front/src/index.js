@@ -9,12 +9,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-<<<<<<< HEAD
-    {/* 커밋테스트 */}
-=======
     {/* 글로벌 스타일 적용 컴포넌트 */}
     <GlobalStyle/>
->>>>>>> origin/Develope
   </React.StrictMode>
 );
 
