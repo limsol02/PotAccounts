@@ -1,0 +1,21 @@
+.button-wrap {
+  display: flex;
+  gap: 10px;
+}
+
+.button-style {
+  color: #888888;
+  width: 20%;
+}
+
+.button-submit {
+  width: 100%;
+  color: #888888;
+  margin-top: 50px;
+}
+
+.error-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
