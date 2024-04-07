@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import SignUp from './pages/signup/Signup';
 
 function App() {
     const [elist, setElist] = useState([]);
@@ -17,27 +18,7 @@ function App() {
 
     return (
         <div>
-            <h1>백엔드에서 가져온 데이터입니다</h1>
-            <table>
-                <thead>
-                <tr>
-                    <th>사원번호</th>
-                    <th>이름</th>
-                    <th>직책</th>
-                    <th>급여</th>
-                </tr>
-                </thead>
-                <tbody>
-                {elist.map(emp => (
-                    <tr key={emp.empno}>
-                        <td>{emp.empno}</td>
-                        <td>{emp.ename}</td>
-                        <td>{emp.job}</td>
-                        <td>{emp.sal}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <SignUp />
         </div>
     );
 }
