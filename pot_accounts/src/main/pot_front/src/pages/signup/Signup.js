@@ -158,7 +158,6 @@ const SignUp = () => {
     // 일단 백에서 보낸 인증코드는 res.data 로 저장(인증번호 버튼 클릭시 콘솔 출력)
     const onClickCheckCode = () => {
         //const codeNumber = document.querySelector("#codeNumber").value
-        typeof(codeNumber)
         // 인증번호 가져오는 함수
         axios.get(baseUrl+"/codeNumber").then(res=>{
             console.log("보낸 인증번호" + res.data)
