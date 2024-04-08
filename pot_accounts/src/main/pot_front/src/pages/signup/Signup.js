@@ -3,6 +3,7 @@ import LogoImage from '../../assets/images/PotAccounts-logo.png'
 // 스타일적용
 import { FromWrap, ImageSize, InputWrap, LeftInner, RightInner, Wrap, WrapInner, WrapInnerR } from './Signupstyle';
 import  './signupstyle.scss'
+import axios from "axios";
 
 const SignUp = () => {
 
@@ -26,8 +27,8 @@ const SignUp = () => {
     const [isPwConfirm, setIsPwConfirm] = useState('');
     const [isEmail, setIsEmail] = useState('');
 
-    
-
+    // 기본 boot url
+    const baseUrl = "http://localhost:9596";
 
     // 유저네임값 변화 인지 인풋핸들러
     const onChangeNameHandler = (e) => {
@@ -44,15 +45,28 @@ const SignUp = () => {
     const onClickId = () => {
         // 아이디 입력시 구조 설정
         const idExp = /^[a-zA-z0-9]{4,12}$/;
-    
-        // 아이디 유효성 확인(구조에 맞게 입력했는지 확인)
-        if (!idExp.test(id)) {
-            setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
-            setIsId(false);
-        } else {
-            setIdMessage("사용가능한 아이디 입니다.");
-            setIsId(true);
-        }
+
+        // 아이디 중복체크 DB
+        let userId = document.querySelector("#userid").value
+        const params = { id: userId};
+        axios.get(baseUrl+"/idCheck",{params}).then(res => {
+            // 사용중인 아이디인지 중복 체크
+            if(!res.data){
+                setIdMessage("이미 사용중인 아이디 입니다.");
+                setIsId(false);
+            }else{
+                // 아이디 유효성 확인(구조에 맞게 입력했는지 확인)
+                if (!idExp.test(id)) {
+                    setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
+                    setIsId(false);
+                } else {
+                    setIdMessage("사용가능한 아이디 입니다.");
+                    setIsId(true);
+                }
+            }
+        }).catch(error => {
+            console.log("아이디 중복체크 에러"+error)
+        })
     }
 
     // 유저비밀번호값 변화 인지 인풋핸들러
@@ -108,15 +122,51 @@ const SignUp = () => {
             setIsEmail(true);
         }
     }
+
     // 이메일 보내기 버튼 클릭시
+
     const onClickEmail = () => {
-        console.log('이메일보내기')
-        alert('이메일로 인증번호를 발송 했습니다')
-    }
+        console.log('이메일보내기');
+        const userMailOb = document.querySelector("#useremail");
+        const userMail = userMailOb.value;
+        //const data = {receiver : userMail};
+        console.log(userMail);
+        axios.post(baseUrl+"/sendMail",null,{
+            headers: { },
+            params: { receiver : userMail}
+        })
+            .then(response => {
+                // 서버에서 온 응답 처리
+                //console.log('서버 응답:', response.data); // 응답 데이터 출력
+                if (response.data !=='') {
+                    alert('이메일로 인증번호를 발송했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('이메일 발송 에러:', error);
+                alert('이메일 발송에 실패했습니다.01');
+            });
+    };
 
     // 유저이메일인증번호 값 변화 인지 인풋 핸들러
     const onChangeEmailChkHandler = (e) => {
         // 이메일 인증번호 기능 추가 후 작성할 예정
+        const newEmailKey = e.target.value;
+        setEmailchk(newEmailKey)
+    }
+
+    // 일단 백에서 보낸 인증코드는 res.data 로 저장(인증번호 버튼 클릭시 콘솔 출력)
+    const onClickCheckCode = () => {
+        //const codeNumber = document.querySelector("#codeNumber").value
+        typeof(codeNumber)
+        // 인증번호 가져오는 함수
+        axios.get(baseUrl+"/codeNumber").then(res=>{
+            console.log("보낸 인증번호" + res.data)
+           // 인증번호 일치 / 불일치 시 수행할 이벤트 작성
+            // ~~
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     // 회원가입 처리 -> 회원가입버튼클릭시 유효성 검사
@@ -129,19 +179,41 @@ const SignUp = () => {
             return idMessage;
         }
     }
-    
 
+
+
+    // 회원가입 버튼 클릭 -> db 저장
+    const onClickRegister = () => {
+        console.log("회원가입 버튼 클릭")
+        // input 입력 정보 controller 로 넘기기
+        const formData = new FormData();
+        formData.append('name', document.querySelector("#username").value);
+        formData.append('id', document.querySelector("#userid").value);
+        formData.append('password', document.querySelector("#userpw").value);
+        formData.append('email', document.querySelector("#useremail").value);
+
+        axios.post(baseUrl+"/register",formData).then(response => {
+            if (response.data !== '') {
+                alert(response.data);
+            }
+        })
+            .catch(error => {
+                console.error('에러:', error);
+                alert('임솔 다시!');
+            });
+    }
     return (
         <Wrap>
             <WrapInner>
                 <LeftInner>
                     <h3 className='main-title'>Sign Up</h3>
 
-                    <FromWrap  onClick={handleSignUpHandler}>
+                    <FromWrap  onClick={handleSignUpHandler} id='memberForm'>
 
                         <InputWrap>
                             <label className='sub-title' htmlFor='username'>이름</label>
                             <input
+                                name='name'
                                 type='text' 
                                 id='username' 
                                 value={name} 
@@ -159,8 +231,9 @@ const SignUp = () => {
                             </div>
                             <div className='button-wrap'>
                                 <input
-                                    type='text' 
-                                    id='userid' 
+                                    name='id'
+                                    type='text'
+                                    id='userid'
                                     value={id} 
                                     placeholder='사용 할 아이디를 입력해주세요' 
                                     onChange={onChangeIdHandler}
@@ -176,8 +249,9 @@ const SignUp = () => {
                                 <div className='error'>{pwMessage}</div>
                             </div>
                             <input
+                                name='password'
                                 type='password' 
-                                id='userpw' 
+                                id='userpw'
                                 value={password}
                                 minLength={8}
                                 maxLength={20}
@@ -185,7 +259,6 @@ const SignUp = () => {
                                 onChange={onChangePasswordHandler}
                             >
                             </input>
-                            
                         </InputWrap>
 
                         <InputWrap>
@@ -212,30 +285,34 @@ const SignUp = () => {
                             </div>
                             <div className='button-wrap'>
                                 <input
-                                    type='email' 
-                                    id='useremail' 
-                                    value={email} 
-                                    placeholder='이메일주소를 입력해주세요' 
+                                    type='email'
+                                    name='email'
+                                    id='useremail'
+                                    value={email}
+                                    placeholder='이메일주소를 입력해주세요'
                                     onChange={onChangeEmailHandler}
                                 >
                                 </input>
-                                <button className='button-style' onClick={onClickEmail}>인증메일</button>
+                                <button className='button-style' onClick={onClickEmail}>메일전송</button>
                             </div>
+
+                            <div className='button-wrap'>
                             <input
-                                type='text' 
-                                value={emailchk} 
+                                type='text'
+                                id='codeNumber'
+                                value={emailchk}
                                 placeholder='이메일 인증번호를 입력해주세요'
                                 onChange={onChangeEmailChkHandler}
                             >
                             </input>
+                            <button className='button-style' onClick={onClickCheckCode}>인증확인</button>
+                            </div>
                         </InputWrap>
 
-                        <button className='button-submit' htmlType="submit">회원가입</button>
+                        <button className='button-submit' htmlType="button" onClick={onClickRegister} >회원가입</button>
                     </FromWrap>
                 </LeftInner>
             </WrapInner>
-
-
 
             <WrapInnerR>
                 <RightInner>
@@ -245,5 +322,4 @@ const SignUp = () => {
         </Wrap>
     )
 }
-
 export default SignUp;
