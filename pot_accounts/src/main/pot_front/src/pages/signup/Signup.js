@@ -14,12 +14,14 @@ const SignUp = () => {
     const [confirmPw, setConfirmPw] = useState('');
     const [email, setEmail] = useState('');
     const [emailchk, setEmailchk] = useState('');
+    const [codechk, setCodechk] = useState('');
 
     // 오류메세지 확인을 위한 상태변화 세팅
     const [idMessage, setIdMessage] = useState('');
     const [pwMessage, setPwMessage] = useState('');
     const [pwConfirmMessage, setPwConfirmMessage] = useState('');
     const [emailchkMessage, setEmailchkMessage] = useState('');
+    const [codechkMessage, setcodechkMessage] = useState('');
 
     // 유효성 확인을 위한 상태변화 세팅
     const [isId, setIsId] = useState('');
@@ -162,7 +164,15 @@ const SignUp = () => {
         axios.get(baseUrl+"/codeNumber").then(res=>{
             console.log("보낸 인증번호" + res.data)
            // 인증번호 일치 / 불일치 시 수행할 이벤트 작성
-            // ~~
+          if(emailchk == res.data){
+              alert("인증번호 일치")
+              setcodechkMessage("인증번호가 일치합니다.");
+              setCodechk(true);
+          }else{
+              alert("인증번호 ㄴㄴ")
+              setcodechkMessage("인증번호가 불일치합니다.");
+              setCodechk(false);
+          }
         }).catch(err=>{
             console.log(err)
         })
@@ -294,27 +304,30 @@ const SignUp = () => {
                                 </input>
                                 <button className='button-style' onClick={onClickEmail}>메일전송</button>
                             </div>
-
+                            <div className='error-form'>
+                                <label className='sub-title' htmlFor='codeNumber'>인증번호</label>
+                                <div className='error'>{codechkMessage}</div>
+                            </div>
                             <div className='button-wrap'>
-                            <input
-                                type='text'
-                                id='codeNumber'
-                                value={emailchk}
-                                placeholder='이메일 인증번호를 입력해주세요'
-                                onChange={onChangeEmailChkHandler}
-                            >
-                            </input>
-                            <button className='button-style' onClick={onClickCheckCode}>인증확인</button>
+                                <input
+                                    type='text'
+                                    id='codeNumber'
+                                    value={emailchk}
+                                    placeholder='이메일 인증번호를 입력해주세요'
+                                    onChange={onChangeEmailChkHandler}
+                                >
+                                </input>
+                                <button className='button-style' onClick={onClickCheckCode}>인증확인</button>
                             </div>
                         </InputWrap>
 
-                        <button className='button-submit' htmlType="button" onClick={onClickRegister} >회원가입</button>
+                        <button className='button-submit' htmlType="button" onClick={onClickRegister}>회원가입</button>
                     </FromWrap>
                 </LeftInner>
             </WrapInner>
 
             <WrapInnerR>
-                <RightInner>
+            <RightInner>
                     <ImageSize src={LogoImage} alt="Pot_Accounts-logo" />
                 </RightInner>
             </WrapInnerR>
