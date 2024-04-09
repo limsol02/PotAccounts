@@ -1,0 +1,30 @@
+.button-wrap {
+  display: flex;
+  gap: 10px;
+}
+
+.button-submit {
+  width: 100%;
+  color: #888888;
+  margin-top: 50px;
+}
+
+.text-style {
+  color: #888888;
+  font-weight: 400;
+}
+
+.error-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.goto-login {
+  color: #888888;
+  font-weight: 400;
+}
+.goto-login:hover {
+  color: #2DB400;
+  font-weight: 700;
+}

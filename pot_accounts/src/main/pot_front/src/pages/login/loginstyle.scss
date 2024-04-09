@@ -1,0 +1,37 @@
+@import '../../styles/color.scss';
+
+.button-wrap {
+    display: flex;
+    gap: 10px;
+}
+
+
+.button-submit {
+    width: 100%;
+    color: $GrayScale-88;
+
+    margin-top: 50px;
+}
+
+.text-style {
+    color: $GrayScale-88;
+    font-weight: 400;
+}
+
+
+.error-form {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.goto-login {
+    color: $GrayScale-88;
+    font-weight: 400;
+
+    &:hover {
+        color: $Primary-green600;
+        font-weight: 700;
+    }
+}
