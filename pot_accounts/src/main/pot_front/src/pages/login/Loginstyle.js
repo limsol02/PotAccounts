@@ -65,6 +65,7 @@ gap : 10px;
 export const TextButtonWrap = styled.div`
 display : flex;
 align-items : center;
+font-size : 16px;
 
 gap : 5px;
 
