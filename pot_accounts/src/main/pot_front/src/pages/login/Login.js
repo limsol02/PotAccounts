@@ -6,10 +6,10 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 import  './loginstyle.scss'
 import { Link } from "react-router-dom";
-
+import { Findidmodal, Findpwmodal } from "./components/Modals";
 
 const Login = () => {
-
+    
     // 초기값세팅 - 아이디, 비밀번호
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -63,6 +63,19 @@ const Login = () => {
         e.preventDefault();
     }
 
+    
+    // 아이디 찾기 모달 상태 관리
+    const [showFindIdModal, setShowFindIdModal] = useState(false);
+
+    // 비밀번호 찾기 모달 상태 관리
+    const [showFindPwModal, setShowFindPwModal] = useState(false);
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
+
     return (
         <>
             <Wrap>
@@ -109,9 +122,8 @@ const Login = () => {
                             </InputWrap2>
 
                             <TextButtonWrap>
-                                <NonBorder>아이디찾기</NonBorder>
-                                <p className="text-style">|</p>
-                                <NonBorder>비밀번호찾기</NonBorder>
+                                {setShowFindIdModal && <Findidmodal/>}
+                                {setShowFindPwModal && <Findpwmodal/>}
                             </TextButtonWrap>
 
                             <button className='button-submit' type="submit" onClick={handleLginHandler}>로그인</button>
@@ -119,7 +131,7 @@ const Login = () => {
                             <GotoSignupWrap>
                                 <p className="text-style">밑채운독</p>
                                 <NonBorder>
-                                    <Link to="/signup" className="goto-login" >
+                                    <Link to="/signup" className="goto" >
                                         가입하러가기
                                         <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                                     </Link>
