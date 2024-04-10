@@ -1,0 +1,44 @@
+@import '../../styles/color.scss';
+
+.button-wrap {
+    display: flex;
+    gap: 10px;
+}
+
+
+.button-submit {
+    width: 100%;
+    color: $GrayScale-88;
+    font-size: 16px;
+
+    margin-top: 50px;
+}
+
+.text-style {
+    color: $GrayScale-88;
+    font-weight: 400;
+}
+
+
+.error-form {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.goto {
+    color: $GrayScale-88;
+    font-weight: 400;
+    border: none;
+    padding: 0;
+    background: none;
+
+    &:hover {
+        color: $Primary-green600;
+        font-weight: 700;
+        background: none;
+        padding: 0;
+        border: none;
+    }
+}
