@@ -43,6 +43,8 @@ public class MemberService {
 
         // 회원등록
         public String insMem(Member ins){
+            // 자동 가계부 생성
+            dao.createAutoAcc();
             return dao.insMem(ins)>0?"회원가입성공" : "회원가입에러";
         }
 

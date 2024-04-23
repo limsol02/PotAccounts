@@ -14,5 +14,14 @@
     <select id="checkId" parameterType="String" resultType="int">
         SELECT count(id) FROM MEMBER WHERE id = #{id}
     </select>
-
+    <!--회원가입 시, 개인 가계부 자동생성-->
+    <insert id="createAutoAcc">
+        insert into accounts(accounts_key, type, participant, accounts_title)
+        values
+        (   (SELECT currval + 1 AS accounts_key from sequences where name='acc_seq'),
+            '개인',
+            (select currval as participant from sequences where name = 'mem_seq'),
+            (select concat(name, '님의 개인가계부') as accounts_title from member mem
+             where (select currval from sequences where name = 'mem_seq' limit 1) = mem.member_key))
+    </insert>
 </mapper>
