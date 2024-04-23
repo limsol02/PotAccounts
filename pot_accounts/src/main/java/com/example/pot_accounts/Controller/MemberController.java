@@ -57,4 +57,10 @@ public class MemberController {
         }
         return ResponseEntity.ok(service.checkId(id));
     }
+
+    // 로그인
+    @PostMapping("login")
+    public ResponseEntity<?> login(Member mem){
+        return ResponseEntity.ok(service.loginMem(mem));
+    }
 }

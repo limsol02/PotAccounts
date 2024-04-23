@@ -7,7 +7,9 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import  './loginstyle.scss'
 import { Link } from "react-router-dom";
 import { Findidmodal, Findpwmodal } from "./components/Modals";
-
+import axios from "axios";
+// 기본 boot url
+const baseUrl = "http://localhost:9596";
 const Login = () => {
     
     // 초기값세팅 - 아이디, 비밀번호
@@ -60,7 +62,29 @@ const Login = () => {
 
     // 로그인 처리
     const handleLginHandler = async(e) => {
-        e.preventDefault();
+        let userIdOb = document.querySelector("[name=id]")
+        let userPwdOb = document.querySelector("[name=password]")
+        let userId = userIdOb.value;
+        let userPwd = userPwdOb.value;
+        axios.post(baseUrl+"/login",null,{
+            headers: { },
+            params: { id : userId , password : userPwd}
+        })
+            .then(response => {
+                if (response.data !=='') {
+                    alert(response.data.name+'님 로그인 성공');
+                    console.log(response.data.name)
+                    e.preventDefault();
+                }else{
+                    alert('로그인 실패')
+                }
+            })
+            .catch(error => {
+                console.error('로그인 에러:', error);
+            });
+
+
+
     }
 
     
@@ -96,6 +120,7 @@ const Login = () => {
                                 <div className='error'>{idMessage}</div>
                             </div>
                                 <input
+                                    name = "id"
                                     type="text"
                                     id='userid' 
                                     placeholder="아이디를 입력해주세요"
@@ -111,6 +136,7 @@ const Login = () => {
                                 <div className='error'>{pwMessage}</div>
                             </div>
                                 <input
+                                    name = "password"
                                     type="password"
                                     placeholder="비밀번호를 입력해주세요"
                                     onChange={onChangePasswordHandler}

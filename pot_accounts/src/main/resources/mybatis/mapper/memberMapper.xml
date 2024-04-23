@@ -10,18 +10,28 @@
         VALUES
             ((SELECT nextval('mem_seq') AS member_key), #{name}, #{id}, #{password}, #{email}, '1')
     </insert>
+
     <!--아이디 중복체크-->
     <select id="checkId" parameterType="String" resultType="int">
         SELECT count(id) FROM MEMBER WHERE id = #{id}
     </select>
+
     <!--회원가입 시, 개인 가계부 자동생성-->
-    <insert id="createAutoAcc">
-        insert into accounts(accounts_key, type, participant, accounts_title)
-        values
-        (   (SELECT currval + 1 AS accounts_key from sequences where name='acc_seq'),
-            '개인',
-            (select currval as participant from sequences where name = 'mem_seq'),
-            (select concat(name, '님의 개인가계부') as accounts_title from member mem
-             where (select currval from sequences where name = 'mem_seq' limit 1) = mem.member_key))
+    <insert id="accSquPlus">
+        INSERT INTO accounts (accounts_key) VALUES ((SELECT nextval('acc_seq') AS accounts_key))
     </insert>
+    <update id="createAutoAcc">
+        UPDATE accounts
+        SET
+            type = '개인',
+            participant = (SELECT currval AS participant FROM sequences WHERE name = 'mem_seq'),
+            accounts_title = (SELECT CONCAT(name, '님의 개인가계부') AS accounts_title FROM member mem
+                              WHERE (select currval from sequences where name = 'mem_seq') = mem.member_key LIMIT 1)
+        where accounts_key = (SELECT currval from sequences where name = 'acc_seq')
+    </update>
+
+    <!--로그인-->
+    <select id="loginMem" resultType="member" parameterType="member">
+        select * from member where id = #{id} and password = #{password}
+    </select>
 </mapper>

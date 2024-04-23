@@ -43,9 +43,12 @@ public class MemberService {
 
         // 회원등록
         public String insMem(Member ins){
-            // 자동 가계부 생성
-            dao.createAutoAcc();
-            return dao.insMem(ins)>0?"회원가입성공" : "회원가입에러";
+            // 회원가입 dao
+            dao.insMem(ins);
+            // 가계부 시퀀스 증가 dao
+            dao.accSquPlus();
+            // 자동 가계부 생성 dao
+            return dao.createAutoAcc()>0?"회원가입성공" : "회원가입에러";
         }
 
         // 아이디 중복체크(회원가입)
@@ -55,6 +58,11 @@ public class MemberService {
             } else {
                 return true;
             }
+        }
+
+        // 로그인
+        public Member loginMem(Member mem){
+            return dao.loginMem(mem);
         }
 
 }
