@@ -16,4 +16,6 @@ public interface MemberDao {
     int createAutoAcc();
     // 로그인
     Member loginMem(Member mem);
+    // 아이디 찾기
+    String findId(Member mem);
 }

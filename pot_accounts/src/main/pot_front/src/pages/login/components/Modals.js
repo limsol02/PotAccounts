@@ -5,7 +5,9 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './modalstyle.scss';
 import { FindArea, FromWrap, InputWrap } from "./Modalstyle";
-
+import axios from "axios";
+// 기본 boot url
+const baseUrl = "http://localhost:9596";
 const ModalComponent = ({ title, children, isOpen, closeModal }) => {
     return (
         <Modal isOpen={isOpen} className="dimmed">
@@ -73,19 +75,39 @@ export const Findidmodal = (props) => {
 
     // 아이디 찾기 버튼 클릭시
     const handleFindId = async(e) => {
-        e.preventDefault(); //리프레시되는것 막기
+        //e.preventDefault(); //리프레시되는것 막기
         
         // 백에서 가져온 데이터 비교 했을때
         // 확인부탁
-        let username = name; // 이름 상태 가져오기
-        let useremail = email; // 이메일 상태 가져오기
+        let username = document.querySelector("[name=name]").value; // 이름 상태 가져오기
+        let useremail = document.querySelector("[name=email]").value; // 이메일 상태 가져오기
 
-        if (username === useremail) { //값이 같으면
-            setIdMessage('백에서 가져온 아이디');
-            // 리턴메세지 대신 백에서 가져온 일치하는 값 넣기
-        } else {
-            setIdMessage('아이디를 찾을 수 없습니다');
-        }
+        axios.post(baseUrl+"/findId",null,{
+            headers: { },
+            params: { name : username , email : useremail}
+        })
+            .then(response => {
+                if (response.data !=='') {
+                    alert('해당 정보의 아이디는'+response.data);
+                    setIdMessage('백에서 가져온 아이디'+response.data);
+                    e.preventDefault();
+                }else{
+                    alert('해당 정보가 없습니다')
+                    setIdMessage('아이디를 찾을 수 없습니다');
+                }
+            })
+            .catch(error => {
+                console.error('아이디찾기 에러:', error);
+            });
+
+
+
+        // if (username === useremail) { //값이 같으면
+        //     setIdMessage('백에서 가져온 아이디');
+        //     // 리턴메세지 대신 백에서 가져온 일치하는 값 넣기
+        // } else {
+        //     setIdMessage('아이디를 찾을 수 없습니다');
+        // }
     }
 
     return (
@@ -102,7 +124,8 @@ export const Findidmodal = (props) => {
                     <div className='error'>{nameMessage}</div>
                 </div>
                     <input
-                        type='text' 
+                        type='text'
+                        name = 'name'
                         id='username' 
                         value={name} 
                         maxLength={10} 
@@ -117,7 +140,8 @@ export const Findidmodal = (props) => {
                     <label className='sub-title' htmlFor='useremail'>이메일</label>
                     <div className='error'>{emailchkMessage}</div>
                 </div>
-                    <input type='email' 
+                    <input type='email'
+                           name = 'email'
                             id='useremail' 
                             value={email} 
                             placeholder='이메일주소를 입력해주세요' 

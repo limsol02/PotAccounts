@@ -63,4 +63,10 @@ public class MemberController {
     public ResponseEntity<?> login(Member mem){
         return ResponseEntity.ok(service.loginMem(mem));
     }
+
+    // 아이디찾기
+    @PostMapping("findId")
+    public ResponseEntity<String> findId(Member mem){
+        return ResponseEntity.ok(service.findId(mem));
+    }
 }

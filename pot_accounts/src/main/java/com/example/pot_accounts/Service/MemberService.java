@@ -65,4 +65,8 @@ public class MemberService {
             return dao.loginMem(mem);
         }
 
+        // 아이디찾기
+        public String findId(Member mem){
+            return dao.findId(mem);
+        }
 }
