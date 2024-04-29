@@ -43,4 +43,7 @@
     <select id="findPwd" parameterType="member" resultType="String">
         select password from member where id = #{id} and email = #{email}
     </select>
+    <update id="resetPwd" parameterType="member">
+        update member set password = #{password} where id = #{id}
+    </update>
 </mapper>

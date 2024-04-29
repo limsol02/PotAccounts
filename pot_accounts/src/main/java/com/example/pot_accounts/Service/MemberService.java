@@ -74,4 +74,9 @@ public class MemberService {
         public String findPwd(Member mem){
             return dao.findPwd(mem);
         }
+
+        // 비밀번호 재설정
+        public String resetPwd(Member upt){
+            return dao.resetPwd(upt)>0?"비밀번호 수정 완료" : "비밀번호 수정 에러";
+        }
 }

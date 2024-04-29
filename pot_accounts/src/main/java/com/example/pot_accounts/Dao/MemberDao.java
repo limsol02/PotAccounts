@@ -20,4 +20,7 @@ public interface MemberDao {
     String findId(Member mem);
     // 비밀번호 찾기
     String findPwd(Member mem);
+    // 비밀번호 재설정
+    int resetPwd(Member upt);
+
 }

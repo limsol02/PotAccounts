@@ -264,12 +264,30 @@ export const Findpwmodal = () => {
     // 재설정하기 버튼 클릭
     const onClickReset = () => {
         console.log("재설정 버튼 클릭")
+        let formData01  = new FormData();
+        formData01.append('password',document.querySelector("#userpw-re").value);
+        console.log("비밀번호"+document.querySelector("#userpw-re").value);
+        formData01.append('id',document.querySelector("#pwdInput01 [name=id]").value);
+        console.log("아이디"+document.querySelector("#pwdInput01 [name=id]").value);
+        if(setIsPwConfirm){
+            axios.post(baseUrl+"/resetPwd",formData01)
+                .then(res=>{
+                    //alert(res.data)
+                    const confirmPwd = window.confirm(res.data + "/n 새로 로그인 해주세요");
+                    if (confirmPwd) {
+                        window.location.href = "http://localhost:3000";
+                    }
+                })
+                .catch(error=>{
+                console.log("비밀번호 재설정 에러"+error)
+            })
+        }
     }
 
     const onClickCheck = function() {
         // post로 넘겨줄 param 값
-        let id = document.querySelector("#pwdInput01 [name=id]").value; // 이름 상태 가져오기
-        let email = document.querySelector("#pwdInput02 #userpwdemail").value; // 이메일 상태 가져오기
+        let id = document.querySelector("#pwdInput01 [name=id]").value; // 아이디 값 가져오기
+        let email = document.querySelector("#pwdInput02 #userpwdemail").value; // 이메일 값 가져오기
 
         axios.post(baseUrl+"/findPwd",null,{
             headers: { },
@@ -278,7 +296,7 @@ export const Findpwmodal = () => {
             .then(response => {
                 if (response.data !=='') {
                     // DB속 비밀번호
-                    alert('해당 정보의 비밀번호'+response.data);
+                    //alert('해당 정보의 비밀번호'+response.data);
                     //setIsEmail(true);
                     //setIsId(true);
                     document.getElementById('resetInput').style.display = 'block';
@@ -359,6 +377,7 @@ export const Findpwmodal = () => {
                             <div className='error'>{pwConfirmMessage}</div>
                         </div>
                         <input
+                            name='password'
                             type='password'
                             id='userpw-re'
                             value={confirmPw}

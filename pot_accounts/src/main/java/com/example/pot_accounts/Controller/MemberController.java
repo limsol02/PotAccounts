@@ -74,4 +74,11 @@ public class MemberController {
     public ResponseEntity<String> findPwd(Member mem){
         return ResponseEntity.ok(service.findPwd(mem));
     }
+    // 비밀번호 재설정
+    @PostMapping("resetPwd")
+    public ResponseEntity<String> resetPwd(Member upt){
+        System.out.println("아이디"+upt.getId());
+        System.out.println("비밀번호"+upt.getPassword());
+        return ResponseEntity.ok(service.resetPwd(upt));
+    }
 }
