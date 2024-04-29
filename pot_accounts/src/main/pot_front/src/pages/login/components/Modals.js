@@ -269,11 +269,12 @@ export const Findpwmodal = () => {
         console.log("비밀번호"+document.querySelector("#userpw-re").value);
         formData01.append('id',document.querySelector("#pwdInput01 [name=id]").value);
         console.log("아이디"+document.querySelector("#pwdInput01 [name=id]").value);
-        if(setIsPwConfirm){
+
+        if(isPwConfirm){
             axios.post(baseUrl+"/resetPwd",formData01)
                 .then(res=>{
                     //alert(res.data)
-                    const confirmPwd = window.confirm(res.data + "/n 새로 로그인 해주세요");
+                    const confirmPwd = window.confirm(res.data + "\n 새로 로그인 해주세요");
                     if (confirmPwd) {
                         window.location.href = "http://localhost:3000";
                     }
@@ -281,6 +282,8 @@ export const Findpwmodal = () => {
                 .catch(error=>{
                 console.log("비밀번호 재설정 에러"+error)
             })
+        }else{
+            alert("비밀번호가 일치하지 않습니다.")
         }
     }
 
