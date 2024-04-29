@@ -18,4 +18,6 @@ public interface MemberDao {
     Member loginMem(Member mem);
     // 아이디 찾기
     String findId(Member mem);
+    // 비밀번호 찾기
+    String findPwd(Member mem);
 }

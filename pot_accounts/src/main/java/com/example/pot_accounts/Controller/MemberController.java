@@ -69,4 +69,9 @@ public class MemberController {
     public ResponseEntity<String> findId(Member mem){
         return ResponseEntity.ok(service.findId(mem));
     }
+    // 비밀번호 찾기
+    @PostMapping("findPwd")
+    public ResponseEntity<String> findPwd(Member mem){
+        return ResponseEntity.ok(service.findPwd(mem));
+    }
 }

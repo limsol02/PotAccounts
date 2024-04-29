@@ -69,4 +69,9 @@ public class MemberService {
         public String findId(Member mem){
             return dao.findId(mem);
         }
+
+        // 비밀번호 찾기
+        public String findPwd(Member mem){
+            return dao.findPwd(mem);
+        }
 }

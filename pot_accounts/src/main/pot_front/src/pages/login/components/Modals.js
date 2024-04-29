@@ -30,6 +30,12 @@ export const Findidmodal = (props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
+       //  let resetInputId = document.querySelector("[name=name]");
+       //  let resetInputEmail = document.querySelector("[name=email]");
+       // if(resetInputId.value!="" && resetInputEmail.value!=""){
+       //     resetInputId.value = "";
+       //     resetInputEmail.value ="";
+       // }
         setModalIsOpen(true);
     };
 
@@ -44,6 +50,7 @@ export const Findidmodal = (props) => {
     const [nameMessage, setNameMessage] = useState('');
     const [emailchkMessage, setEmailchkMessage] = useState('');
     const [idMessage, setIdMessage] = useState('');
+    const [findIdMessage, setFindIdMessage] = useState('');
 
     // 유효성 확인을 위한 상태변화 세팅
     const [isName, setIsName] = useState('');
@@ -89,25 +96,16 @@ export const Findidmodal = (props) => {
             .then(response => {
                 if (response.data !=='') {
                     alert('해당 정보의 아이디는'+response.data);
-                    setIdMessage('백에서 가져온 아이디'+response.data);
+                    setFindIdMessage('아이디 정보 : '+response.data);
                     e.preventDefault();
                 }else{
                     alert('해당 정보가 없습니다')
-                    setIdMessage('아이디를 찾을 수 없습니다');
+                    setFindIdMessage('아이디를 찾을 수 없습니다');
                 }
             })
             .catch(error => {
                 console.error('아이디찾기 에러:', error);
             });
-
-
-
-        // if (username === useremail) { //값이 같으면
-        //     setIdMessage('백에서 가져온 아이디');
-        //     // 리턴메세지 대신 백에서 가져온 일치하는 값 넣기
-        // } else {
-        //     setIdMessage('아이디를 찾을 수 없습니다');
-        // }
     }
 
     return (
@@ -118,6 +116,7 @@ export const Findidmodal = (props) => {
                 isOpen={modalIsOpen}
                 closeModal={closeModal}
             >
+                <form id="findIdForm">
                 <InputWrap>
                 <div className="error-form">
                     <label className='sub-title' htmlFor='username'>이름</label>
@@ -126,10 +125,10 @@ export const Findidmodal = (props) => {
                     <input
                         type='text'
                         name = 'name'
-                        id='username' 
-                        value={name} 
-                        maxLength={10} 
-                        placeholder='이름을 입력해주세요' 
+                        id='username'
+                        value={name}
+                        maxLength={10}
+                        placeholder='이름을 입력해주세요'
                         onChange={onChangeNameHandler}
                     >
                     </input>
@@ -142,20 +141,20 @@ export const Findidmodal = (props) => {
                 </div>
                     <input type='email'
                            name = 'email'
-                            id='useremail' 
-                            value={email} 
-                            placeholder='이메일주소를 입력해주세요' 
+                            id='useremail'
+                            value={email}
+                            placeholder='이메일주소를 입력해주세요'
                             onChange={onChangeEmailHandler}
                     >
                     </input>
                 </InputWrap>
-
+                </form>
                 <FindArea>
                     {/* 이름과 이메일주소가 일치하면 아이디를 보여줌 */}
-                    <p className="find-text">{setIdMessage}</p>
+                    <p className="find-text">{findIdMessage}</p>
                 </FindArea>
 
-                <button  type="submit" onClick={handleFindId}>찾기</button>
+                <button  type="button" onClick={handleFindId}>찾기</button>
                 <button className="goto-pw">비밀번호 찾으러 가기</button>
             </ModalComponent>
         </>
@@ -264,25 +263,41 @@ export const Findpwmodal = () => {
 
     // 재설정하기 버튼 클릭
     const onClickReset = () => {
-        console.log("회원가입 버튼 클릭")
-        // // input 입력 정보 controller 로 넘기기
-        // const formData = new FormData();
-        // formData.append('name', document.querySelector("#username").value);
-        // formData.append('id', document.querySelector("#userid").value);
-        // formData.append('password', document.querySelector("#userpw").value);
-        // formData.append('email', document.querySelector("#useremail").value);
-
-        // axios.post(baseUrl+"/register",formData).then(response => {
-        //     if (response.data !== '') {
-        //         alert(response.data);
-        //     }
-        // })
-        //     .catch(error => {
-        //         console.error('에러:', error);
-        //         alert('임솔 다시!');
-        //     });
+        console.log("재설정 버튼 클릭")
     }
 
+    const onClickCheck = function() {
+        // post로 넘겨줄 param 값
+        let id = document.querySelector("#pwdInput01 [name=id]").value; // 이름 상태 가져오기
+        let email = document.querySelector("#pwdInput02 #userpwdemail").value; // 이메일 상태 가져오기
+
+        axios.post(baseUrl+"/findPwd",null,{
+            headers: { },
+            params: { id : id , email : email}
+        })
+            .then(response => {
+                if (response.data !=='') {
+                    // DB속 비밀번호
+                    alert('해당 정보의 비밀번호'+response.data);
+                    //setIsEmail(true);
+                    //setIsId(true);
+                    document.getElementById('resetInput').style.display = 'block';
+                    document.getElementById('checkButton').style.display = 'none';
+                    document.getElementById('resetBtn').style.display = 'block';
+
+                }else{
+                    alert('해당 정보가 없습니다')
+                    document.getElementById('resetInput').style.display = 'node';
+                    document.getElementById('checkButton').style.display = 'block';
+                    document.getElementById('resetBtn').style.display = 'none';
+
+                }
+            })
+            .catch(error => {
+                console.error('비밀번호 찾기 에러:', error);
+            });
+
+    };
     return (
         <>
             <button className="goto" onClick={openModal}>비밀번호 찾기</button>
@@ -291,72 +306,70 @@ export const Findpwmodal = () => {
                 isOpen={modalIsOpen}
                 closeModal={closeModal}
             >
-                <InputWrap>
+                <InputWrap id="pwdInput01">
                     <div className='error-form'>
                         <label className='sub-title' htmlFor='userid'>아이디</label>
                         <div className='error'>{idMessage}</div>
                     </div>
                     <input
-                        type='text' 
-                        id='userid' 
-                        value={id} 
-                        placeholder='가입 한 아이디를 입력해주세요' 
+                        type='text'
+                        name='id'
+                        id='userid'
+                        value={id}
+                        placeholder='가입 한 아이디를 입력해주세요'
                         onChange={onChangeIdHandler}
-                    >
-                    </input>
+                    />
                 </InputWrap>
 
-                <InputWrap>
+                <InputWrap id="pwdInput02">
                     <div className='error-form'>
                         <label className='sub-title'>이메일</label>
                         <div className='error'>{emailchkMessage}</div>
                     </div>
                     <input
-                        type='email' 
-                        id='useremail' 
-                        value={email} 
-                        placeholder='가입 한 이메일주소를 입력해주세요' 
+                        type='email'
+                        name='email'
+                        id='userpwdemail'
+                        value={email}
+                        placeholder='가입 한 이메일주소를 입력해주세요'
                         onChange={onChangeEmailHandler}
-                    >
-                    </input>
+                    />
                 </InputWrap>
+                <button className="margin-top" id="checkButton" onClick={onClickCheck}>정보찾기</button>
 
-                <InputWrap className="find-style">
-                    <div className='error-form'>
-                        <label className='sub-title'>비밀번호 재설정</label>
-                        <div className='error'>{pwMessage}</div>
-                    </div>
-                    <input
-                        type='password' 
-                        id='userpw' 
-                        value={password}
-                        minLength={8}
-                        maxLength={20}
-                        placeholder='새로운 비밀번호를 입력해주세요(문자, 숫자, 특수문자 포함 0~20자)' 
-                        onChange={onChangePasswordHandler}
-                    >
-                    </input>
-                </InputWrap>
-                <InputWrap className="find-style">
-                    <div className='error-form'>
-                        <label className='sub-title'>비밀번호 한번더 입력하기</label>
-                        <div className='error'>{pwConfirmMessage}</div>
-                    </div>
-                    <input
-                        type='password' 
-                        id='userpw-re' 
-                        value={confirmPw}
-                        minLength={8}
-                        maxLength={20}
-                        placeholder='비밀번호를 다시 한 번 입력 해주세요'
-                        onChange={onConfirmPasswordHandler}
-                    >
-                    </input>
-                </InputWrap>
-                
-
-                <button className="margin-top" onClick={onClickReset}>재설정 하기</button>
+                <div id="resetInput" style={{display: 'none'}}>
+                    <InputWrap className="find-style">
+                        <div className='error-form'>
+                            <label className='sub-title'>비밀번호 재설정</label>
+                            <div className='error'>{pwMessage}</div>
+                        </div>
+                        <input
+                            type='password'
+                            id='userpw'
+                            value={password}
+                            minLength={8}
+                            maxLength={20}
+                            placeholder='새로운 비밀번호를 입력해주세요(문자, 숫자, 특수문자 포함 0~20자)'
+                            onChange={onChangePasswordHandler}
+                        />
+                    </InputWrap>
+                    <InputWrap className="find-style">
+                        <div className='error-form'>
+                            <label className='sub-title'>비밀번호 한번더 입력하기</label>
+                            <div className='error'>{pwConfirmMessage}</div>
+                        </div>
+                        <input
+                            type='password'
+                            id='userpw-re'
+                            value={confirmPw}
+                            minLength={8}
+                            maxLength={20}
+                            placeholder='비밀번호를 다시 한 번 입력 해주세요'
+                            onChange={onConfirmPasswordHandler}
+                        />
+                    </InputWrap>
+                </div>
+                <button className="margin-top" id="resetBtn" onClick={onClickReset} style={{display:'none'}}>재설정 하기</button>
             </ModalComponent>
         </>
-    );
-};
+    )};

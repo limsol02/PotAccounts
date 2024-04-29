@@ -39,4 +39,8 @@
     <select id="findId" parameterType="member" resultType="String">
         select id from member where name = #{name} and email = #{email}
     </select>
+    <!--비밀번호 찾기, 비밀번호 재설정-->
+    <select id="findPwd" parameterType="member" resultType="String">
+        select password from member where id = #{id} and email = #{email}
+    </select>
 </mapper>
