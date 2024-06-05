@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import SignUp from './pages/signup/Signup';
 import Routers from './Routers';
-import Login from './pages/login/Login';
-import Header from './pages/layout/Header';
-import { Outlet } from 'react-router-dom';
 
 function App() {
     const [elist, setElist] = useState([]);
