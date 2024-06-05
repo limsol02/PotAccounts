@@ -16,7 +16,10 @@ const Weeklytab = () => {
                 <FontAwesomeIcon icon={faCalendar}/>
                 <p>주간별 분석</p>
             </div>
-            <WeeklyChart/>
+            
+            <div className="chart-form">
+                <WeeklyChart/>
+            </div>
         </div>
     
     )
