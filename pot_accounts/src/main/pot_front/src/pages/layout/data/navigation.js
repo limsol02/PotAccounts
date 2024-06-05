@@ -55,11 +55,11 @@ const navigation = [
             },
         ],
     },
-    {
-        title: "로그아웃",
-        iconName: <FontAwesomeIcon icon={faArrowRightFromBracket}  width={'16px'} height={'16px'} />,
-        path: PATH.LOGOUT,
-    },
+        {
+            title: "로그아웃",
+            iconName: <FontAwesomeIcon icon={faArrowRightFromBracket}  width={'16px'} height={'16px'} />,
+            path: PATH.LOGOUT,
+        },
 
 
 ];
