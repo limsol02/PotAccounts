@@ -34,7 +34,9 @@ padding-left : 50px;
 `
 
 export const ListStyle = styled.li`
-margin-bottom : 35px;`
+margin-bottom : 35px;
+font-size : 18px;
+`
 
 export const SubWrap =styled.ul`
 margin-top : 15px;
