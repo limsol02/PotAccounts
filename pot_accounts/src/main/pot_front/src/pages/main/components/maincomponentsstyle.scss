@@ -1,0 +1,22 @@
+// 메인(홈) 컴포넌트 전역 스타일 설정
+
+@import '../../../styles/color.scss';
+@import '../../../styles/mixin.scss';
+
+.box-form {
+    background-color: $GrayScale-Wite;
+    border: 1px solid $GrayScale-E3;
+    border-radius: 15px;
+    padding: 40px;
+
+    height: 100%;
+}
+.components-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    margin-bottom: 40px;
+
+    @include Regular-20
+}
