@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import  './maincomponentsstyle.scss'
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
+import MonthlyChart from "../../../components/chart/MonthlyChart";
 
 const Scheduletab = () => {
     return (
@@ -12,6 +13,7 @@ const Scheduletab = () => {
                 <FontAwesomeIcon icon={faCalendar}/>
                 <p>이번달 일정</p>
             </div>
+            {/* <MonthlyChart/> */}
         </div>
     
     )
