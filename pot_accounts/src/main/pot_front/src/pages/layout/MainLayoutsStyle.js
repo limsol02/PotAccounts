@@ -47,6 +47,9 @@ gap : 10px;
     color : #222;
     border : 1px solid #20690B;
 }
+&.selected {
+    color: #2DB400;
+}
 `
 export const CreateBookButton = styled.button`
 border-radius: 20px;
@@ -65,6 +68,9 @@ gap : 10px;
     background : #fff;
     color : #222;
     border : 1px solid #20690B;
+}
+&.selected {
+    color: #2DB400;
 }
 `
 export const ButtonContainer = styled.div`

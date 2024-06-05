@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header"
+import Header from "./Header";
 import { AddBookButton, ButtonContainer, Container, CreateBookButton, Full, Inner, MainSpan, MainTitle } from "./MainLayoutsStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 const Mainlayout = () => {
-
     // 버튼 클릭시 상태 변화
     const [selectedButton, setSelectedButton] = useState(null);
 
@@ -45,23 +44,25 @@ const Mainlayout = () => {
                     <ButtonContainer>
                         <AddBookButton
                             onClick={handleAddBookClick}
+                            className={'selected'}
                         >
-                            <FontAwesomeIcon className={'selected'} icon={faCircle} />
+                            <FontAwesomeIcon icon={faCircle} />
                             <p>안윤희님의 가계부</p>
                         </AddBookButton>
 
                         {/* 아이콘이 faPlus인 버튼 누른 후 가계부 추가 하면 생기는 버튼 */}
                         {bookList.map((bookName, index) => (
-                            <AddBookButton key={index}>
-                                <FontAwesomeIcon className={selectedButton === 'addBook' ? 'selected' : ''} icon={faCircle} />
+                            <AddBookButton key={index} className={selectedButton === 'addBook' ? 'selected' : ''}>
+                                <FontAwesomeIcon icon={faCircle} />
                                 <p>{bookName}</p>
                             </AddBookButton>
                         ))}
 
                         <CreateBookButton
                             onClick={handleCreateBookClick}
+                            className={selectedButton === 'createBook' ? 'selected' : ''}
                         >
-                            <FontAwesomeIcon className={selectedButton === 'createBook' ? 'selected' : ''} icon={faPlus} />
+                            <FontAwesomeIcon icon={faPlus} />
                         </CreateBookButton>
                     </ButtonContainer>
 
@@ -69,7 +70,7 @@ const Mainlayout = () => {
                 </Inner>
             </Full>
         </>
-    )
+    );
 }
 
 export default Mainlayout;
