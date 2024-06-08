@@ -4,12 +4,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Mainlayout from "./pages/layout/MainLayouts"
 import SignUp from "./pages/signup/Signup"
 import Login from "./pages/login/Login"
-import Main from "./pages/main/Main"
-import Dayanalyze from "./pages/analyze/DayAnalyze"
-import Categoryanalyze from "./pages/analyze/CategoryAnalyze"
-import Budget from "./pages/budget/Budget"
-import Calendar from "./pages/calendar/Calendar"
-import Write from "./pages/write/Write"
+import Main from "./pages/1. main/Main"
+import Dayanalyze from "./pages/3. analyze/DayAnalyze"
+import Categoryanalyze from "./pages/3. analyze/CategoryAnalyze"
+import Budget from "./pages/4. budget/Budget"
+import Calendar from "./pages/5. calendar/Calendar"
+import Write from "./pages/2. write/Write"
 
 
 
