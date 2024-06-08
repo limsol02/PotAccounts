@@ -14,7 +14,7 @@ const Weeklytab = () => {
         <div className='box-form weekly'>
             <div className='components-title'>
                 <FontAwesomeIcon icon={faCalendar}/>
-                <p>주간별 분석</p>
+                <p>{new Date().getMonth() + 1}월 주간별 분석</p>
             </div>
             
             <div className="chart-form">
