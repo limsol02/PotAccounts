@@ -11,7 +11,7 @@ import axios from "axios";
 // 기본 boot url
 const baseUrl = "http://localhost:9596";
 const Login = () => {
-    
+
     // 초기값세팅 - 아이디, 비밀번호
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -30,7 +30,7 @@ const Login = () => {
         setId(e.target.value);
         // 아이디 입력시 구조 설정
         const idExp = /^[a-zA-z0-9]{4,12}$/;
-    
+
         // 아이디 유효성 확인(구조에 맞게 입력했는지 확인)
         if (!idExp.test(id)) {
             setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
@@ -84,7 +84,7 @@ const Login = () => {
             });
     }
 
-    
+
     // 아이디 찾기 모달 상태 관리
     const [showFindIdModal, setShowFindIdModal] = useState(false);
 
@@ -112,14 +112,14 @@ const Login = () => {
 
                         <FromWrap>
                             <InputWrap>
-                            <div className="error-form">
-                                <label className='sub-title' htmlFor='userid'>아이디</label>
-                                <div className='error'>{idMessage}</div>
-                            </div>
+                                <div className="error-form">
+                                    <label className='sub-title' htmlFor='userid'>아이디</label>
+                                    <div className='error'>{idMessage}</div>
+                                </div>
                                 <input
                                     name = "id"
                                     type="text"
-                                    id='userid' 
+                                    id='userid'
                                     placeholder="아이디를 입력해주세요"
                                     onChange={onChangeIdHandler}
                                     value={id}
@@ -128,17 +128,17 @@ const Login = () => {
                             </InputWrap>
 
                             <InputWrap2>
-                            <div className="error-form">
-                                <label className='sub-title' htmlFor='userpw'>비밀번호</label>
-                                <div className='error'>{pwMessage}</div>
-                            </div>
+                                <div className="error-form">
+                                    <label className='sub-title' htmlFor='userpw'>비밀번호</label>
+                                    <div className='error'>{pwMessage}</div>
+                                </div>
                                 <input
                                     name = "password"
                                     type="password"
                                     placeholder="비밀번호를 입력해주세요"
                                     onChange={onChangePasswordHandler}
                                     value={password}
-                                    id='userpw' 
+                                    id='userpw'
                                 >
 
                                 </input>
