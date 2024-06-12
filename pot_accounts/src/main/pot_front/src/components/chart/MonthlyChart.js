@@ -5,7 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { Bar } from 'react-chartjs-2';
 import { useQuery } from '@tanstack/react-query';
 import getMoneyUnit from "../utils/money";
-import  API  from '../../api/config'
+import  API  from '../../config/apiConfig'
 import QUERYKEYS from '../utils/querykey'
 import { useParams } from "react-router-dom";
 import { loadMonthRecord } from "../../api/accounts";

@@ -28,7 +28,7 @@ export function getRemainDate(selectDate) {
     
     return selectDate >= curDate ? selectDate - curDate : lastDate - curDate + selectDate;
 }
-// 시작일-종료일 반반환 함수
+// 시작일-종료일 반환 함수
 export function getDateRangeUnit(startDay, endDay) {
     const today = new Date();
     const startDate = new Date(today.getFullYear(), today.getMonth(), startDay);
