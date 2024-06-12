@@ -8,7 +8,7 @@ function App() {
     useEffect(() => {
         axios.get('http://localhost:9596/emp')
             .then(response => {
-                setElist(response.data);
+                //setElist(response.data);
                 console.log(response.data);
             })
             .catch(error => {
