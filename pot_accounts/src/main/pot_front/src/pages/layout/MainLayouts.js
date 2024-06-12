@@ -43,6 +43,11 @@ const Mainlayout = () => {
         }
     }, []);
 
+    const currentDate = new Date().toLocaleDateString();
+    const currentTime = new Date().toLocaleTimeString();
+    const greetingMessage = "환영합니다! 오늘도 알뜰한 하루를 시작해볼까요?";
+    const encouragementMessage = "당신은 당신의 재정을 책임질 수 있습니다. 우리 함께 해봐요!";
+
     return (
         <>
             <Full>
@@ -51,6 +56,10 @@ const Mainlayout = () => {
                     <Container>
                         <MainTitle>{userName}</MainTitle>
                         <MainSpan>님</MainSpan>
+                        <p style={{fontSize: '1.5em', color: '#555', marginTop:'23px'}}>{greetingMessage}</p>
+                        {/*<p style={{fontSize: '1.2em', color: '#777'}}>{encouragementMessage}</p>*/}
+                        {/*<p style={{fontSize: '1em', color: '#AAA'}}>현재 날짜: {currentDate}</p>*/}
+                        {/*<p style={{fontSize: '1em', color: '#AAA'}}>현재 시간: {currentTime}</p>*/}
                     </Container>
 
                     <ButtonContainer>
@@ -58,7 +67,7 @@ const Mainlayout = () => {
                             onClick={handleAddBookClick}
                             className={'selected'}
                         >
-                            <FontAwesomeIcon icon={faCircle} />
+                            <FontAwesomeIcon icon={faCircle}/>
                             <p>{userName}님의 가계부</p>
                         </AddBookButton>
 
