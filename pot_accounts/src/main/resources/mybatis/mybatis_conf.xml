@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="com.example.pot_accounts.VO.Emp" alias="emp"/>
+        <typeAlias type="com.example.pot_accounts.VO.Member" alias="member"/>
     </typeAliases>
     <!-- 기타 MyBatis 설정들을 여기에 추가 -->
 </configuration>
