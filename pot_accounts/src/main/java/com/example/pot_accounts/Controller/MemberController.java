@@ -60,8 +60,14 @@ public class MemberController {
 
     // 로그인
     @PostMapping("login")
-    public ResponseEntity<?> login(Member mem){
-        return ResponseEntity.ok(service.loginMem(mem));
+    public ResponseEntity<?> login(Member mem,HttpSession session){
+        Member loginMember = service.loginMem(mem);
+        // 세션설정
+        if(loginMember!=null){
+            session.setAttribute("loginMem",loginMember);
+            System.out.println(loginMember.getName()+"세션저장 ㅇㅇㅇ");
+        }
+        return ResponseEntity.ok(loginMember);
     }
 
     // 아이디찾기
@@ -81,4 +87,5 @@ public class MemberController {
         System.out.println("비밀번호"+upt.getPassword());
         return ResponseEntity.ok(service.resetPwd(upt));
     }
+
 }

@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 import  './loginstyle.scss'
-import { Link } from "react-router-dom";
+import { Link,useNavigate   } from "react-router-dom";
 import { Findidmodal, Findpwmodal } from "./components/Modals";
 import axios from "axios";
 // 기본 boot url
 const baseUrl = "http://localhost:9596";
 const Login = () => {
-
+    const navigate = useNavigate();
     // 초기값세팅 - 아이디, 비밀번호
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -72,7 +72,9 @@ const Login = () => {
         })
             .then(response => {
                 if (response.data !=='') {
-                    alert(response.data.name+'님 로그인 성공');
+                    alert(response.data.name+'님 로그인 성공\n 메인페이지로 이동합니다.');
+                    sessionStorage.setItem('mem', JSON.stringify(response.data));  // 세션에 사용자 객체 저장
+                    navigate('/main');
                     console.log(response.data.name)
                     e.preventDefault();
                 }else{
