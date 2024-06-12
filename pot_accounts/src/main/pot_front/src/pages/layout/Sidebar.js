@@ -9,8 +9,12 @@ const Sidebar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        sessionStorage.removeItem('mem'); // 세션에서 사용자 정보 제거
-        navigate(PATH.LOGIN);  // 로그인 페이지로 리디렉션
+        if (window.confirm("로그아웃 하시겠습니까?")){
+            sessionStorage.removeItem('mem'); // 세션에서 사용자 정보 제거
+            navigate(PATH.LOGIN);  // 로그인 페이지로 리디렉션
+        }else{
+            alert("로그아웃이 취소되었습니다.")
+        }
         //alert("세션해제")
     };
 
