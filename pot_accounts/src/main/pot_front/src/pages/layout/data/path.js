@@ -4,8 +4,8 @@ const PATH = {
     MAIN: "/main", //메인
     WRITE: "/write", //입력
     Analyze: "/analyze", //분석
-    DATE_RANGE_CHART: "/dateChart", // 기간별분석
-    CATEGORY_CHART: "/categoryChart", //카테고리별분석
+    DATE_RANGE_CHART: "/dayanalyze", // 기간별분석
+    CATEGORY_CHART: "/categoryanalyze", //카테고리별분석
     BUDGET: "/budget", // 예산
     CALENDAR: "/calendar", // 캘린더
     ME: "/me", //마이페이지

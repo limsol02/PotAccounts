@@ -1,0 +1,34 @@
+// 메인(홈) 스타일 전역 스타일 설정
+
+@import '../../styles/color.scss';
+
+.main {
+    gap: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sec {
+    // background: $GrayScale-88;
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+
+    height: 50%;
+}
+
+.budget {
+    width: 40%;
+}
+
+.schedule {
+    width: 40%;
+}
+
+.monthly {
+    width: 60%;
+}
+
+.weekly {
+    width: 60%;
+}
