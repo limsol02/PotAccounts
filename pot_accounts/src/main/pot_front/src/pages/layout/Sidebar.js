@@ -29,7 +29,7 @@ const Sidebar = () => {
                     return (
                         <ListStyle key={index}>
                             <button onClick={handleLogout} style={{ color: isActive ? "#2DB400" : "inherit", background: 'none', border: 'none', cursor: 'pointer' }}>
-                                {menu.iconName} {menu.title}
+                                <a style={{fontSize : '18px'}}>{menu.iconName} {menu.title}</a>
                             </button>
                         </ListStyle>
                     );
