@@ -39,5 +39,11 @@ export function getDateRangeUnit(startDay, endDay) {
     return `(${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)})`;
 }
 
+// dd + '일' 반환 함수
+export function formatDate(date) {
+    const dateObj = new Date(date);
+    const day = dateObj.getDate();
+    return `${day}일`;
+}
 
 // 유틸성을 위해 작성함 함수들
