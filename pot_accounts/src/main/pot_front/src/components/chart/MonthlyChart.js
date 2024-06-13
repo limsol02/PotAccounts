@@ -158,9 +158,7 @@ const MonthlyChart = (props) => {
     }, [monthData]);
 
     return (
-        <div>
-            <Bar options={options} data={data} height={100}/>
-        </div>
+        <Bar options={options} data={data} height={100}/>
     )
 }
 
