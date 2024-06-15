@@ -13,7 +13,7 @@
 
     <!--아이디 중복체크-->
     <select id="checkId" parameterType="String" resultType="int">
-        SELECT count(id) FROM MEMBER WHERE id = #{id}
+        SELECT count(id) FROM member WHERE id = #{id}
     </select>
 
     <!--회원가입 시, 개인 가계부 자동생성-->
