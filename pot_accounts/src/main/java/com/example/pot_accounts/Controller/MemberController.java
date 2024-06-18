@@ -4,6 +4,7 @@ import com.example.pot_accounts.GenerateCertNumber;
 import com.example.pot_accounts.Service.MemberService;
 import com.example.pot_accounts.VO.MailSender;
 import com.example.pot_accounts.VO.Member;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,15 +58,23 @@ public class MemberController {
         }
         return ResponseEntity.ok(service.checkId(id));
     }
-
+    
     // 로그인
     @PostMapping("login")
-    public ResponseEntity<?> login(Member mem,HttpSession session){
+    public ResponseEntity<?> login(Member mem, HttpSession session, HttpServletRequest request) {
+        // 기존 세션 무효화
+        if (session.getAttribute("loginMem") != null) {
+            System.out.println("기존 세션 무효화");
+            session.invalidate();
+            session = request.getSession(true); // 새로운 세션 생성
+        }
+
         Member loginMember = service.loginMem(mem);
         // 세션설정
-        if(loginMember!=null){
-            session.setAttribute("loginMem",loginMember);
-            System.out.println(loginMember.getName()+"세션저장 ㅇㅇㅇ");
+        if (loginMember != null) {
+            session.setAttribute("loginMem", loginMember);
+            System.out.println(loginMember.getName() + " 세션 저장 ㅇㅇㅇ");
+            System.out.println("세션 ID: " + session.getId());
         }
         return ResponseEntity.ok(loginMember);
     }

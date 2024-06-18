@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.pot_accounts.Dao.MainDao">
+    <select id="accountsInfo" parameterType="String" resultType="accounts">
+        select * from accounts where participant = (select member.member_key from member where id = #{id})
+    </select>
+</mapper>
