@@ -34,7 +34,7 @@ public class MainController {
         }
         return service.accountsInfo(id);
     }
-     // 차트데이터
+     // 지출 월별 차트
     @GetMapping("/{id}/payMonth")
     public Map<String, List<Payment>> payMonth(@PathVariable("id") String id) {
         System.out.println(id + " 들어오냐22222??");
@@ -44,7 +44,7 @@ public class MainController {
         payRes.put("payMonth03", service.payMonth03(id));
         return payRes;
     }
-
+    // 수입 월별 차트
     @GetMapping("/{id}/incomeMonth")
     public Map<String, List<Income>> incomeMonth(@PathVariable("id") String id){
         Map<String, List<Income>> incomeRes = new HashMap<>();
@@ -52,5 +52,15 @@ public class MainController {
         incomeRes.put("incomeMonth02", service.incomeMonth02(id));
         incomeRes.put("incomeMonth03", service.incomeMonth03(id));
         return incomeRes;
+    }
+    // 주별 지출 차트
+    @GetMapping("/{id}/payWeekly")
+    public List<Payment> payWeekly(@PathVariable("id")String id){
+        return service.payWeekly(id);
+    }
+    // 주별 수입 차트
+    @GetMapping("/{id}/incomeWeekly")
+    public List<Income> incomeWeekly(@PathVariable("id")String id){
+        return service.IncomeWeekly(id);
     }
 }

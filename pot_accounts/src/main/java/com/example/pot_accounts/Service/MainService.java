@@ -35,4 +35,10 @@ public class MainService {
     }public List<Income> incomeMonth03(String id){
         return dao.incomeMonth03(id);
     }
+    public List<Payment> payWeekly(String id){
+        return dao.payWeekly(id);
+    }
+    public List<Income> IncomeWeekly(String id){
+        return dao.incomeWeekly(id);
+    }
 }

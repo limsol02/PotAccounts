@@ -169,10 +169,10 @@ const MonthlyChart = (props) => {
         }
     }, []);
 
-    console.log("PayMonth01:", payMonth01); // 콘솔 로그 추가
-    console.log("PayMonth02:", payMonth02); // 콘솔 로그 추가
-    console.log("PayMonth03:", payMonth03); // 콘솔 로그 추가
-    console.log(payArr)
+    // console.log("PayMonth01:", payMonth01); // 콘솔 로그 추가
+    // console.log("PayMonth02:", payMonth02); // 콘솔 로그 추가
+    // console.log("PayMonth03:", payMonth03); // 콘솔 로그 추가
+    // console.log(payArr)
 
     const data = useMemo(() => {
         if (!monthData) {

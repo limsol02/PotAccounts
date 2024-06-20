@@ -20,7 +20,7 @@ export const accountInfo = async (id) => {
     }
 };
 
-// 차트 데이터
+// 월별 차트 데이터
 export const payMonth = async (id) =>{
     try {
         const res = await axios.get(`${API.ACCOUNT}/${id}/payMonth`);
@@ -47,4 +47,34 @@ export const incomeMonth = async (id) =>{
         throw error;
     }
 }
+
+// 주별 차트 데이터
+export const payWeekly = async (id) => {
+        try {
+            const res = await axios.get(`${API.ACCOUNT}/${id}/payWeekly`);
+            if(res.data){
+                return res.data;
+            }else{
+                console.log("주별 지출 데이터 정보없음")
+            }
+        }catch (error){
+            console.log("지출 주별에러",error)
+            throw error;
+        }
+}
+export const incomeWeekly = async (id) => {
+    try{
+        const res = await axios.get(`${API.ACCOUNT}/${id}/incomeWeekly`)
+        if(res.data){
+            return res.data;
+        }else{
+            console.log("주별 수입 데이터 정보없음")
+        }
+    }catch (err){
+        console.log("수입 주별 에러",err)
+        throw err;
+    }
+}
+
+
 

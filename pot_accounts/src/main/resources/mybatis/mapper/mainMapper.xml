@@ -57,4 +57,40 @@
           AND accounts_key = (select member_key from member where id = #{id})
         ORDER BY income_date
     </select>
+
+    <select id="payWeekly" parameterType="String" resultType="payment">
+        SELECT
+        CASE
+        WHEN YEARWEEK(pay_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) THEN '1주차'
+        WHEN YEARWEEK(pay_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 1 THEN '2주차'
+        WHEN YEARWEEK(pay_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 2 THEN '3주차'
+        WHEN YEARWEEK(pay_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 3 THEN '4주차'
+        WHEN YEARWEEK(pay_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 4 THEN '5주차'
+        END AS week_label,
+        SUM(pay_money) AS pay_money
+        FROM payment
+        WHERE pay_date &gt;= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND pay_date &lt; DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%m-01')
+        AND accounts_key = (SELECT member_key FROM member WHERE id = #{id})
+        GROUP BY week_label
+        ORDER BY MIN(pay_date)
+    </select>
+    <select id="incomeWeekly" parameterType="String" resultType="income">
+        SELECT
+            CASE
+                WHEN YEARWEEK(income_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) THEN '1주차'
+                WHEN YEARWEEK(income_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 1 THEN '2주차'
+                WHEN YEARWEEK(income_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 2 THEN '3주차'
+                WHEN YEARWEEK(income_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 3 THEN '4주차'
+                WHEN YEARWEEK(income_date, 1) = YEARWEEK(DATE_FORMAT(CURDATE(), '%Y-%m-01'), 1) + 4 THEN '5주차'
+                END AS week_label,
+            SUM(income_money) AS income_money
+        FROM income
+        WHERE income_date &gt;= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+          AND income_date &lt; DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%m-01')
+          AND accounts_key = (SELECT member_key FROM member WHERE id = #{id})
+        GROUP BY week_label
+        ORDER BY MIN(income_date)
+    </select>
+
 </mapper>

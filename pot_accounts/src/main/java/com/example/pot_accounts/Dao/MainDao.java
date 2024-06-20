@@ -17,5 +17,6 @@ public interface MainDao {
     List<Income> incomeMonth01(@Param("id")String id);
     List<Income> incomeMonth02(@Param("id")String id);
     List<Income> incomeMonth03(@Param("id")String id);
-
+    List<Payment> payWeekly(@Param("id")String id);
+    List<Income> incomeWeekly(@Param("id")String id);
 }

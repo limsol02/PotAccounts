@@ -9,6 +9,7 @@ public class Payment {
     private String pay_memo;
     private String pay_date;
     private String pay_title;
+    private String week_label;
 
     public Payment() {
     }
@@ -86,6 +87,14 @@ public class Payment {
 
     public void setPay_title(String pay_title) {
         this.pay_title = pay_title;
+    }
+
+    public String getWeek_label() {
+        return week_label;
+    }
+
+    public void setWeek_label(String week_label) {
+        this.week_label = week_label;
     }
 
     @Override

@@ -9,6 +9,7 @@ import  API  from '../../config/apiConfig'
 import QUERYKEYS from '../utils/querykey'
 import { useParams } from "react-router-dom";
 import { loadWeeklyCompareAnalyze } from "../../api/accounts";
+import { payWeekly, incomeWeekly} from "../../api/main.js";
 import { getDateRangeUnit } from "../utils/date";
 
 ChartJS.register(
@@ -23,6 +24,10 @@ ChartJS.register(
 
 // 주간별차트
 const WeeklyChart = (props) => {
+    const [payWeeklyData, setPayWeeklyData] = useState([0, 0, 0, 0, 0]); // Initialize with 5 weeks
+    const [incomeWeeklyData, setIncomeWeeklyData] = useState([0, 0, 0, 0, 0]); // Initialize with 5 weeks
+
+
     const {
         datasetIdKey,
         type,
@@ -42,8 +47,9 @@ const WeeklyChart = (props) => {
             },
             tooltip: {
                 callbacks: {
-                    label(value) {
-                        return `${getMoneyUnit(value.parsed.y)}원`;
+                    label: function(context) {
+                        //console.log("Tooltip context:", context); // Debugging
+                        return `${getMoneyUnit(context.raw)}원`;
                     },
                 },
             },
@@ -85,6 +91,48 @@ const WeeklyChart = (props) => {
         queryFn,
     });
 
+    // 데이터 작업
+    const payArr = [0, 0, 0, 0, 0];
+    const incomeArr = [0, 0, 0, 0, 0];
+    useEffect(() => {
+        // 지출
+        const fetchPayWeekly = async (id) => {
+            const payData = await payWeekly(id);
+            if (payData) {
+                payData.forEach(item => {
+                    const weekIndex = parseInt(item.week_label.replace('주차', '')) - 1;
+                    //console.log("주차!!!!!!!!!"+weekIndex)
+                    if (weekIndex >= 0 && weekIndex < payArr.length) {
+                        payArr[weekIndex] = item.pay_money;
+                        //console.log("금액!!!!!!!!!"+item.pay_money)
+                    }
+                });
+                setPayWeeklyData(payArr);
+            }
+        }
+        // 수입
+        const fetchIncomeWeekly = async (id) => {
+            const incomeData = await incomeWeekly(id);
+            if (incomeData) {
+                incomeData.forEach(item => {
+                    const weekIndex = parseInt(item.week_label.replace('주차', '')) - 1;
+                    if (weekIndex >= 0 && weekIndex < incomeArr.length) {
+                        incomeArr[weekIndex] = item.income_money;
+                        //console.log("수입금액!!!!!!!!!"+item.income_money)
+                    }
+                });
+                setIncomeWeeklyData(incomeArr);
+            }
+        }
+        // 함수실행
+        const storedMem = sessionStorage.getItem('mem');
+        if (storedMem) {
+            const mem = JSON.parse(storedMem);
+            fetchPayWeekly(mem.id);
+            fetchIncomeWeekly(mem.id);
+        }
+    },[])
+
     const startDay = 1;
     const endDay = 7;
 
@@ -97,12 +145,12 @@ const WeeklyChart = (props) => {
                 datasets: [
                     {
                         label: '수입',
-                        data: [0, 0, 0, 0, 0],
+                        data: incomeArr,
                         backgroundColor: "rgba(61, 123, 247, 0.5)",
                     },
                     {
                         label: '지출',
-                        data: [0, 0, 0, 0, 0],
+                        data: payArr,
                         backgroundColor: "rgba(239, 67, 82, 0.5)",
                     },
                 ],

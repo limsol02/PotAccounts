@@ -9,6 +9,8 @@ public class Income {
     private String income_memo;
     private String income_date;
     private String income_title;
+    private String week_label;
+
 
     public Income(int income_key, int accounts_key, int income_money, int category_key, String income_method, String income_memo, String income_date, String income_title) {
         this.income_key = income_key;
@@ -86,6 +88,14 @@ public class Income {
 
     public void setIncome_title(String income_title) {
         this.income_title = income_title;
+    }
+
+    public String getWeek_label() {
+        return week_label;
+    }
+
+    public void setWeek_label(String week_label) {
+        this.week_label = week_label;
     }
 
     @Override
