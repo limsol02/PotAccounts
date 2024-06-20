@@ -20,3 +20,31 @@ export const accountInfo = async (id) => {
     }
 };
 
+// 차트 데이터
+export const payMonth = async (id) =>{
+    try {
+        const res = await axios.get(`${API.ACCOUNT}/${id}/payMonth`);
+        if (res.data) {
+            return res.data;
+        } else {
+            return "저장된 지출정보가 없습니다.";
+        }
+    }catch (error){
+        console.log("지출내역에러" + error);
+        throw error;
+    }
+}
+export const incomeMonth = async (id) =>{
+    try {
+        const res = await axios.get(`${API.ACCOUNT}/${id}/incomeMonth`);
+        if (res.data) {
+            return res.data;
+        } else {
+            return "저장된 수입정보가 없습니다.";
+        }
+    }catch (error){
+        console.log("수입내역에러" , error);
+        throw error;
+    }
+}
+

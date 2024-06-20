@@ -5,6 +5,8 @@
     <typeAliases>
         <typeAlias type="com.example.pot_accounts.VO.Member" alias="member"/>
         <typeAlias type="com.example.pot_accounts.VO.Accounts" alias="accounts"/>
+        <typeAlias type="com.example.pot_accounts.VO.Payment" alias="payment"/>
+        <typeAlias type="com.example.pot_accounts.VO.Income" alias="income"/>
+        <typeAlias type="com.example.pot_accounts.VO.Category" alias="category"/>
     </typeAliases>
-    <!-- 기타 MyBatis 설정들을 여기에 추가 -->
 </configuration>
