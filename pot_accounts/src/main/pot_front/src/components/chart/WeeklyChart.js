@@ -20,7 +20,6 @@ ChartJS.register(
     Legend,
 );
 
-
 // 주간별차트
 const WeeklyChart = (props) => {
     const {
@@ -42,8 +41,9 @@ const WeeklyChart = (props) => {
             },
             tooltip: {
                 callbacks: {
-                    label(value) {
-                        return `${getMoneyUnit(value.parsed.y)}원`;
+                    label: (context) => {
+                        const value = context.raw || 0;
+                        return `${getMoneyUnit(value)}원`;
                     },
                 },
             },
@@ -70,7 +70,7 @@ const WeeklyChart = (props) => {
         },
     };
 
-    // 부트에서 주간별 데이터 가져오기
+    // 주간별 데이터 가져오기
     const { bookId } = useParams();
     const queryFn = () =>
         loadWeeklyCompareAnalyze({
@@ -81,17 +81,14 @@ const WeeklyChart = (props) => {
         });
 
     const { data: weekData } = useQuery({
-        queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE],
+        queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE, bookId],
         queryFn,
     });
-
-    const startDay = 1;
-    const endDay = 7;
 
     const labels = ["1째주", "2째주", "3째주", "4째주", "5째주"];
 
     const data = useMemo(() => {
-        if (!weekData || !weekData.income || !weekData.expenses) {
+        if (!weekData || !Array.isArray(weekData.income) || !Array.isArray(weekData.expenses)) {
             return {
                 labels,
                 datasets: [
@@ -109,12 +106,12 @@ const WeeklyChart = (props) => {
             };
         }
 
-        const incomeData = labels.map((label, index) => {
+        const incomeData = labels.map((_, index) => {
             const weekIncome = weekData.income.find(income => income.week === index + 1);
             return weekIncome ? weekIncome.amount : 0;
         });
 
-        const expenseData = labels.map((label, index) => {
+        const expenseData = labels.map((_, index) => {
             const weekExpense = weekData.expenses.find(expense => expense.week === index + 1);
             return weekExpense ? weekExpense.amount : 0;
         });
@@ -124,12 +121,12 @@ const WeeklyChart = (props) => {
             datasets: [
                 {
                     label: '수입',
-                    data: incomeData.map(getMoneyUnit),
+                    data: incomeData(getMoneyUnit),
                     backgroundColor: "rgba(61, 123, 247, 0.5)",
                 },
                 {
                     label: '지출',
-                    data: expenseData.map(getMoneyUnit),
+                    data: expenseData(getMoneyUnit),
                     backgroundColor: "rgba(239, 67, 82, 0.5)",
                 },
             ],
@@ -140,12 +137,12 @@ const WeeklyChart = (props) => {
     const [sum, setSum] = useState(0);
 
     useEffect(() => {
-        if (weekData?.compare) {
-            const totalSum = weekData.compare.reduce((acc, cur) => acc + Number(cur.value ? cur.value : 0), 0);
+        if (Array.isArray(weekData?.compare)) {
+            const totalSum = weekData.compare.reduce((acc, cur) => acc + (Number(cur.value) || 0), 0);
             setSum(totalSum);
 
             const diffValue = weekData.compare[1]
-                ? weekData.compare[1].value - weekData.compare[0].value
+                ? (Number(weekData.compare[1].value) || 0) - (Number(weekData.compare[0].value) || 0)
                 : null;
             setDiff(diffValue);
         }

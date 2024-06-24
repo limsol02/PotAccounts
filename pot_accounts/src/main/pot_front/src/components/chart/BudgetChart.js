@@ -41,18 +41,23 @@ const BudgetChart = (props) => {
         const [thisMonthPayment, setThisMonthPayment] = useState({ value: 0 });
         const [thisRemainBudget, setThisRemainBudget] = useState(0);
 
+        // 임의의 예산 및 지출 데이터(차트확인용)
+        // const [thisMonthBudget, setThisMonthBudget] = useState({ value: 500000 });
+        // const [thisMonthPayment, setThisMonthPayment] = useState({ value: 200000 });
+        // const [thisRemainBudget, setThisRemainBudget] = useState(thisMonthBudget.value - thisMonthPayment.value);
+
         useEffect(() => {
-            if (thisMonthQueryData?.budget) {
+            if (thisMonthQueryData?.budget !== undefined) {
                 setThisMonthBudget({ value: thisMonthQueryData.budget });
             }
 
-            if (thisMonthQueryData?.record) {
+            if (thisMonthQueryData?.record !== undefined) {
                 setThisMonthPayment({ value: thisMonthQueryData.record });
             }
         }, [thisMonthQueryData]);
 
         useEffect(() => {
-            setThisRemainBudget(thisMonthBudget.value - thisMonthPayment.value);
+            setThisRemainBudget((thisMonthBudget?.value || 0) - (thisMonthPayment?.value || 0));
         }, [thisMonthBudget, thisMonthPayment]);
 
         return {
@@ -63,7 +68,7 @@ const BudgetChart = (props) => {
         };
     };
 
-    const { thisMonthBudget, thisMonthPayment, thisRemainBudget, date } = useBudget();
+    const { thisMonthBudget, thisMonthPayment, thisRemainBudget } = useBudget();
     const datas = {
         labels: ['남은 예산', '이번달 지출'],
         datasets: [
@@ -92,8 +97,9 @@ const BudgetChart = (props) => {
             },
             tooltip: {
                 callbacks: {
-                    label: (value) => {
-                        return `${getMoneyUnit(value.parsed.y)}원`;
+                    label: (context) => {
+                        const value = context.raw || 0;
+                        return `${getMoneyUnit(value)}원`;
                     },
                 },
             },
@@ -104,16 +110,14 @@ const BudgetChart = (props) => {
     };
 
     return (
-        <div>
-            {thisMonthBudget.value === 0 ? (
-                <NoneBudgetInner>
-                    <NoneBudgetTxt>설정된 예산이 없습니다</NoneBudgetTxt>
-                    <AddBudgetBtn onClick={goToBudget}>예산 추가하러 가기</AddBudgetBtn>
-                </NoneBudgetInner>
-            ) : (
-                <Doughnut data={datas} options={options} />
-            )}
-        </div>
+        thisMonthBudget.value === 0 ? (
+            <NoneBudgetInner>
+                <NoneBudgetTxt>설정된 예산이 없습니다</NoneBudgetTxt>
+                <AddBudgetBtn onClick={goToBudget}>예산 추가하러 가기</AddBudgetBtn>
+            </NoneBudgetInner>
+        ) : (
+            <Doughnut data={datas} options={options} height={10} />
+        )
     )
 };
 

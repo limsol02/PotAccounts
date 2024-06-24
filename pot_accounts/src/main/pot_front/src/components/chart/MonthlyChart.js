@@ -38,8 +38,9 @@ const MonthlyChart = (props) => {
             },
             tooltip: {
                 callbacks: {
-                    label(value) {
-                        return `${getMoneyUnit(value.parsed.y)}원`;
+                    label: (context) => {
+                        const value = context.raw || 0;
+                        return `${getMoneyUnit(value)}원`;
                     },
                 },
             },
@@ -93,7 +94,7 @@ const MonthlyChart = (props) => {
             month: new Date().getMonth() + 1,
         });
 
-    const { monthData } = useQuery({
+    const { data : monthData } = useQuery({
         queryKey: [QUERYKEYS.LOAD_MONTH_ASSET],
         queryFn,
     });
