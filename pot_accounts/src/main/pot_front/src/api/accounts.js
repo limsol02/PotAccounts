@@ -1,7 +1,7 @@
 import axios from "axios";
 import API from "../config/apiConfig";
 import PATH from "../pages/layout/data/path";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // 기본설정 
 const authorizationClient = axios.create({
@@ -12,15 +12,16 @@ const authorizationClient = axios.create({
     },
 });
 // 로그아웃 클릭시 세션 정보 제거
-export const handleLogout = () => {
+export const handleLogout = (navigate) => {
     if (window.confirm("로그아웃 하시겠습니까?")){
         sessionStorage.removeItem('mem'); // 세션에서 사용자 정보 제거
-        Navigate(PATH.LOGIN);  // 로그인 페이지로 리디렉션
+        navigate(PATH.LOGIN);  // 로그인 페이지로 리디렉션
     }else{
         alert("로그아웃이 취소되었습니다.")
     }
     //alert("세션해제")
 };
+
 // 로그인
 authorizationClient.interceptors.request.use(config => {
     const token = sessionStorage.getItem('mem'); 
