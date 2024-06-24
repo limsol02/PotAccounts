@@ -16,7 +16,15 @@ ChartJS.register(
     Tooltip,
     Legend,
 );
+// 월 이름과 인덱스
+const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+const currentMonthIndex = new Date().getMonth();
+const previousMonthIndex = (currentMonthIndex + 11) % 12;
+const previousTwoMonthIndex = (currentMonthIndex + 10) % 12;
 
+function getMonthLabel(monthIndex) {
+    return monthNames[monthIndex];
+}
 
 // 월별차트
 const MonthlyChart = (props) => {
@@ -29,12 +37,18 @@ const MonthlyChart = (props) => {
         updateMode,
     } = props
 
+    const labels = [
+        getMonthLabel(previousTwoMonthIndex),
+        getMonthLabel(previousMonthIndex),
+        getMonthLabel(currentMonthIndex),
+    ];
+
       // 차트 설정 옵션(디자인, 라벨 수 등)
     const options = {
         responsive: true,
         plugins: {
             legend: {
-                display : false,    
+                display: false,
             },
             tooltip: {
                 callbacks: {
@@ -54,7 +68,6 @@ const MonthlyChart = (props) => {
         },
         scales: {
             x: {
-
                 grid: {
                     display: false,
                 }
@@ -68,39 +81,19 @@ const MonthlyChart = (props) => {
         },
     };
 
-    // 월 이름
-    function getMonthLabel(monthIndex) {
-        const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
-        return monthNames[monthIndex];
-    }
-
-    // 지지난달, 지난달, 이번달 구하는 함수
-    const currentMonthIndex = new Date().getMonth(); 
-    const previousMonthIndex = (currentMonthIndex + 11) % 12; 
-    const previousTwoMonthIndex = (currentMonthIndex + 10) % 12; 
-
-    const labels = [
-        getMonthLabel(previousTwoMonthIndex),
-        getMonthLabel(previousMonthIndex),
-        getMonthLabel(currentMonthIndex),
-    ];
-
     // getMoneyUnit() -> 금액에 쉼표 추가
     const { bookId } = useParams();
-    const queryFn = () =>
-        loadMonthRecord({
+    const { data: monthData } = useQuery({
+        queryKey: [QUERYKEYS.LOAD_MONTH_ASSET, bookId],
+        queryFn: () => loadMonthRecord({
             id: bookId ? +bookId : 0,
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
-        });
-
-    const { data : monthData } = useQuery({
-        queryKey: [QUERYKEYS.LOAD_MONTH_ASSET],
-        queryFn,
+        }),
     });
 
     const data = useMemo(() => {
-        if (!monthData) {
+        if (!monthData || !monthData.income || !monthData.expenses) {
             return {
                 labels,
                 datasets: [
@@ -137,21 +130,18 @@ const MonthlyChart = (props) => {
     }, [monthData, currentMonthIndex, previousMonthIndex, previousTwoMonthIndex]);
 
 
-    const [diff, setDiff] = useState(null); //비교 상태 확인
+    const [diff, setDiff] = useState(undefined); //비교 상태 확인
     const [sum, setSum] = useState(0);
 
     useEffect(() => {
-        if (monthData) { // 월 데이터 금액 합계 계산 및 비교
+        if (monthData && monthData.compare && monthData.compare.length >= 2) {
             setSum(
-                monthData?.compare?.reduce((acc, cur) => {
-                    return acc + Number(cur.value ? cur.value : 0);
-                }, 0),
+                monthData.compare.reduce((acc, cur) => acc + Number(cur.value || 0), 0)
             );
-            setDiff(
-                monthData.compare[1]
-                ? monthData.compare[1].value - monthData.compare[0].value
-                : null,
-            );
+            setDiff(monthData.compare[1].value - monthData.compare[0].value);
+        } else {
+            setSum(0);
+            setDiff(undefined);
         }
     }, [monthData]);
 

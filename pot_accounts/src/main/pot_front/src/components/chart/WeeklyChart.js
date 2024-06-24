@@ -72,17 +72,14 @@ const WeeklyChart = (props) => {
 
     // 주간별 데이터 가져오기
     const { bookId } = useParams();
-    const queryFn = () =>
-        loadWeeklyCompareAnalyze({
+    const { data: weekData } = useQuery({
+        queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE, bookId],
+        queryFn: () => loadWeeklyCompareAnalyze({
             id: bookId ? +bookId : 0,
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
             startDay: 1,
-        });
-
-    const { data: weekData } = useQuery({
-        queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE, bookId],
-        queryFn,
+        }),
     });
 
     const labels = ["1째주", "2째주", "3째주", "4째주", "5째주"];
@@ -137,7 +134,7 @@ const WeeklyChart = (props) => {
     const [sum, setSum] = useState(0);
 
     useEffect(() => {
-        if (Array.isArray(weekData?.compare)) {
+        if (Array.isArray(weekData?.compare && weekData.compare.length >= 2)) {
             const totalSum = weekData.compare.reduce((acc, cur) => acc + (Number(cur.value) || 0), 0);
             setSum(totalSum);
 

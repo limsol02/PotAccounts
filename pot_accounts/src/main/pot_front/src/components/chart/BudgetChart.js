@@ -24,47 +24,42 @@ const BudgetChart = (props) => {
     // 예산 정보 훅
     const useBudget = () => {
         const { bookId } = useParams();
-        const date = new Date();
-
-        const thisMonthqueryFn = () =>
-            loadMonthRecord(
-                Number(bookId),
-                `${date.getFullYear()}/${date.getMonth() + 1}`,
-            );
-
-        const { thisMonthQueryData } = useQuery({
-            queryKey: [QUERYKEYS.LOAD_MONTH_ASSET, date.getMonth() + 1],
-            thisMonthqueryFn,
+        const { data: monthData } = useQuery({
+            queryKey: [QUERYKEYS.LOAD_MONTH_ASSET, bookId],
+            queryFn: () => loadMonthRecord({
+                id: Number(bookId),
+                year: new Date().getFullYear(),
+                month: new Date().getMonth() + 1,
+            }),
         });
 
-        const [thisMonthBudget, setThisMonthBudget] = useState({ value: 0 });
-        const [thisMonthPayment, setThisMonthPayment] = useState({ value: 0 });
-        const [thisRemainBudget, setThisRemainBudget] = useState(0);
+        const [thisMonthBudget, setThisMonthBudget] = useState(0);
+        const [thisMonthPayment, setThisMonthPayment] = useState(0);
+        const [thisRemainBudget, setThisRemainBudget] = useState(thisMonthBudget - thisMonthPayment);
 
         // 임의의 예산 및 지출 데이터(차트확인용)
-        // const [thisMonthBudget, setThisMonthBudget] = useState({ value: 500000 });
-        // const [thisMonthPayment, setThisMonthPayment] = useState({ value: 200000 });
-        // const [thisRemainBudget, setThisRemainBudget] = useState(thisMonthBudget.value - thisMonthPayment.value);
+        // const [thisMonthBudget, setThisMonthBudget] = useState(500000);
+        // const [thisMonthPayment, setThisMonthPayment] = useState(200000);
+        // const [thisRemainBudget, setThisRemainBudget] = useState(thisMonthBudget - thisMonthPayment);
 
         useEffect(() => {
-            if (thisMonthQueryData?.budget !== undefined) {
-                setThisMonthBudget({ value: thisMonthQueryData.budget });
+            if (monthData?.budget !== undefined) {
+                setThisMonthBudget(monthData.budget);
             }
-
-            if (thisMonthQueryData?.record !== undefined) {
-                setThisMonthPayment({ value: thisMonthQueryData.record });
+    
+            if (monthData?.record !== undefined) {
+                setThisMonthPayment(monthData.record);
             }
-        }, [thisMonthQueryData]);
+        }, [monthData]);
 
         useEffect(() => {
-            setThisRemainBudget((thisMonthBudget?.value || 0) - (thisMonthPayment?.value || 0));
+            setThisRemainBudget((thisMonthBudget || 0) - (thisMonthPayment || 0));
         }, [thisMonthBudget, thisMonthPayment]);
 
         return {
             thisMonthBudget,
             thisMonthPayment,
             thisRemainBudget,
-            date,
         };
     };
 
@@ -73,7 +68,7 @@ const BudgetChart = (props) => {
         labels: ['남은 예산', '이번달 지출'],
         datasets: [
             {
-                data: [thisRemainBudget, thisMonthPayment.value],
+                data: [thisRemainBudget, thisMonthPayment],
                 backgroundColor: ['#0A3201', '#B7FF95'],
             },
         ],
@@ -110,7 +105,7 @@ const BudgetChart = (props) => {
     };
 
     return (
-        thisMonthBudget.value === 0 ? (
+        thisMonthBudget === 0 ? (
             <NoneBudgetInner>
                 <NoneBudgetTxt>설정된 예산이 없습니다</NoneBudgetTxt>
                 <AddBudgetBtn onClick={goToBudget}>예산 추가하러 가기</AddBudgetBtn>
