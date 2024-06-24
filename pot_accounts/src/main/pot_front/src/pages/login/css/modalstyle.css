@@ -1,0 +1,327 @@
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 16px;
+  font: inherit;
+  vertical-align: baseline;
+  font-family: "Pretendard", "Malgun Gothic", "Apple Color Emoji";
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+blockquote ::after,
+blockquote ::before,
+q ::after,
+q ::before {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input[type=text], input[type=password], input[type=submit], input[type=search] {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+input:checked[type=checkbox] {
+  background-color: #666;
+  -webkit-appearance: checkbox;
+}
+
+button {
+  -webkit-appearance: button;
+  border-radius: 0;
+  color: #222;
+}
+
+input {
+  color: #222;
+}
+input[type=button], input[type=submit], input[type=reset], input[type=file] {
+  -webkit-appearance: button;
+  border-radius: 0;
+}
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+a {
+  color: #222;
+  text-decoration: none;
+}
+a:active, a:hover {
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: #ffffff;
+  color: #222222;
+  font-size: 16px;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  border: 1px #2DB400 solid;
+  background: #ffffff;
+  height: 42px;
+}
+button:hover {
+  background: #2DB400;
+  color: #ffffff;
+}
+
+input {
+  border-radius: 10px;
+  border: 1px #2DB400 solid;
+  background: #ffffff;
+  width: 100%;
+  height: 42px;
+}
+input[type=text], input[type=password], input[type=email], input[type=submit], input[type=search] {
+  border-radius: 10px;
+  border: 1px #2DB400 solid;
+  background: #ffffff;
+  width: 100%;
+  height: 42px;
+  padding-left: 10px;
+}
+input::-moz-placeholder {
+  color: #888888;
+  padding-left: 5px;
+}
+input::placeholder {
+  color: #888888;
+  padding-left: 5px;
+}
+
+.error {
+  color: #EF4352;
+}
+
+.main-title {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 34px;
+  color: #2DB400;
+  margin-bottom: 50px;
+}
+
+.sub-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #2DB400;
+}
+
+.dimmed {
+  width: 100%;
+  height: 100%;
+  background: rgba(227, 227, 227, 0.4392156863);
+  display: flex;
+  align-items: center;
+}
+
+.modal-wrap {
+  width: 600px;
+  min-height: 600px;
+  margin: 0 auto;
+  padding: 50px;
+  background: #ffffff;
+  box-shadow: 4px 4px 50px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  display: flex;
+}
+
+.modal-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.close-btn {
+  border: none;
+  padding: 0;
+  width: 26px;
+  height: 26px;
+  margin-left: auto;
+}
+
+.find-text {
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.find-style {
+  width: 100%;
+  margin-bottom: auto;
+}
+
+.margin-top {
+  margin-top: auto;
+}
+
+.goto-pw {
+  border: none;
+  background: none;
+  padding: 0;
+  color: #888888;
+}
+.goto-pw:hover {
+  border: none;
+  background: none;
+  font-weight: 700;
+  color: #2DB400;
+}
+
+.complex-area {
+  display: flex;
+  flex-direction: column;
+}

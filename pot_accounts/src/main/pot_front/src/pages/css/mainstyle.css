@@ -1,0 +1,28 @@
+.main {
+  gap: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sec {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  height: 50%;
+}
+
+.budget {
+  width: 35%;
+}
+
+.schedule {
+  width: 35%;
+}
+
+.monthly {
+  width: 65%;
+}
+
+.weekly {
+  width: 65%;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import SignUp from './pages/signup/Signup';
+import Routers from './Routers';
 
 function App() {
     const [elist, setElist] = useState([]);
@@ -8,7 +8,7 @@ function App() {
     useEffect(() => {
         axios.get('http://localhost:9596/emp')
             .then(response => {
-                setElist(response.data);
+                //setElist(response.data);
                 console.log(response.data);
             })
             .catch(error => {
@@ -18,7 +18,7 @@ function App() {
 
     return (
         <div>
-            <SignUp />
+            <Routers />
         </div>
     );
 }

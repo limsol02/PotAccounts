@@ -18,6 +18,8 @@ body {
     
     width: 100vw;
     height: 100vh;
+
+    overflow: hidden;
 }
 
 button {
@@ -82,4 +84,15 @@ input {
 .sub-title {
     @include Bold-16;
     color: $Primary-green600;
+}
+
+
+// 메인레이아웃 버튼 클릭 유무 확인
+.selected {
+    color: $Primary-green600;
+}
+.AddBookButton, .CreateBookButton {
+    &:not(.selected) {
+        color: $GrayScale-C7;
+    }
 }
