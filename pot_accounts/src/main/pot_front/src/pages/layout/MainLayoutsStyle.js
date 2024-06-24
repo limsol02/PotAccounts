@@ -17,6 +17,11 @@ display : flex;
 gap : 7px;
 margin-bottom : 35px;
 `
+export const GreetingMessage = styled.p`
+margin-top : auto;
+color : #555;
+font-size : 18px;
+`
 export const MainTitle = styled.h1`
 font-size : 52px;
 font-weight : 700;

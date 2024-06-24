@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
-import { AddBookButton, ButtonContainer, Container, CreateBookButton, Full, Inner, MainSpan, MainTitle } from "./MainLayoutsStyle";
+import { AddBookButton, ButtonContainer, Container, CreateBookButton, Full, GreetingMessage, Inner, MainSpan, MainTitle } from "./MainLayoutsStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState,useEffect  } from "react";
@@ -43,10 +43,7 @@ const Mainlayout = () => {
         }
     }, []);
 
-    const currentDate = new Date().toLocaleDateString();
-    const currentTime = new Date().toLocaleTimeString();
-    const greetingMessage = "환영합니다! 오늘도 알뜰한 하루를 시작해볼까요?";
-    const encouragementMessage = "당신은 당신의 재정을 책임질 수 있습니다. 우리 함께 해봐요!";
+    // const encouragementMessage = "당신은 당신의 재정을 책임질 수 있습니다. 우리 함께 해봐요!";
 
     return (
         <>
@@ -56,10 +53,7 @@ const Mainlayout = () => {
                     <Container>
                         <MainTitle>{userName}</MainTitle>
                         <MainSpan>님</MainSpan>
-                        <p style={{fontSize: '1.5em', color: '#555', marginTop:'23px'}}>{greetingMessage}</p>
-                        {/*<p style={{fontSize: '1.2em', color: '#777'}}>{encouragementMessage}</p>*/}
-                        {/* <p style={{fontSize: '1em', color: '#AAA'}}>현재 날짜: {currentDate}</p> */}
-                        {/*<p style={{fontSize: '1em', color: '#AAA'}}>현재 시간: {currentTime}</p>*/}
+                        <GreetingMessage>환영합니다! 오늘도 알뜰한 하루를 시작해볼까요?</GreetingMessage>
                     </Container>
 
                     <ButtonContainer>
