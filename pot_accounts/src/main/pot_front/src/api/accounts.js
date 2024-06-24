@@ -96,13 +96,14 @@ export const loadMonthRecord = async (historyData) => {
 // 일주일 기록 불러오기
 export const loadWeeklyCompareAnalyze = async (weeklyData) => {
     const { id, year, month, startDay } = weeklyData;
+    const endDay = startDay + 6;
     // 지출 데이터 가져오기
-    const {  data: payWeeklyData  } = await authorizationClient.get(
-        `${API.ACCOUNT}/${API.USER}/${id}/payMonth?year=${year}&month=${month}/${startDay}`,
+    const { data: payWeeklyData } = await authorizationClient.get(
+        `${API.ACCOUNT}/${API.USER}/${id}/payWeekly?year=${year}&month=${month}&startDay=${startDay}&endDay=${endDay}`
     );
     // 수입 데이터 가져오기
     const { data: incomeWeeklyData } = await axios.get(
-        `${API.ACCOUNT}/${API.USER}/${id}/incomeMonth?year=${year}&month=${month}/${startDay}`
+        `${API.ACCOUNT}/${API.USER}/${id}/incomeWeekly?year=${year}&month=${month}&startDay=${startDay}&endDay=${endDay}`
     );
     return {
         payWeeklyData,
