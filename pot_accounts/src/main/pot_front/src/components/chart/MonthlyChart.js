@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { useQuery } from '@tanstack/react-query';
 import getMoneyUnit from "../utils/money";
-import  API  from '../../config/apiConfig'
 import QUERYKEYS from '../utils/querykey'
 import { useParams } from "react-router-dom";
 import { loadMonthRecord } from "../../api/accounts";
@@ -29,7 +27,7 @@ const MonthlyChart = (props) => {
         options: chartOptions,
         fallbackContent,
         updateMode,
-      } = props
+    } = props
 
       // 차트 설정 옵션(디자인, 라벨 수 등)
     const options = {
@@ -86,7 +84,6 @@ const MonthlyChart = (props) => {
         getMonthLabel(currentMonthIndex),
     ];
 
-    // 부트에서 월별 데이터 가져오기
     // getMoneyUnit() -> 금액에 쉼표 추가
     const { bookId } = useParams();
     const queryFn = () =>
@@ -158,9 +155,7 @@ const MonthlyChart = (props) => {
     }, [monthData]);
 
     return (
-        <div>
-            <Bar options={options} data={data} height={100}/>
-        </div>
+        <Bar options={options} data={data} height={100}/>
     )
 }
 

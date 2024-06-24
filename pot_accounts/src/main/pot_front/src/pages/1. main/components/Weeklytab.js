@@ -17,9 +17,7 @@ const Weeklytab = () => {
                 <p>{new Date().getMonth() + 1}월 주간별 분석</p>
             </div>
             
-            <div className="chart-form">
-                <WeeklyChart/>
-            </div>
+            <WeeklyChart className="chart-form"/>
         </div>
     
     )

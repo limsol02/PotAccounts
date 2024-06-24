@@ -7,6 +7,7 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import MonthlyChart from "../../../components/chart/MonthlyChart";
+import BudgetChart from "../../../components/chart/BudgetChart";
 
 const Budgettab = () => {
     return (
@@ -16,7 +17,7 @@ const Budgettab = () => {
                 <FontAwesomeIcon icon={faCalendar}/>
                 <p>이번달 예산</p>
             </div>
-            {/* <MonthlyChart/> */}
+            <BudgetChart/>
         </div>
     
     )

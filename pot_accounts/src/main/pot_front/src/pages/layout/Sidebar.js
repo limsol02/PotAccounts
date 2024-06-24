@@ -1,15 +1,29 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import PATH from "./data/path";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import navigation from "./data/navigation";
 import { ListStyle, SidebarWrap, SubListStyle, SubWrap } from "./Layoutstyles";
+import { handleLogout } from "../../api/accounts";
 
 const Sidebar = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     return (
         <SidebarWrap>
             {navigation.map((menu, index) => {
                 const isActive = location.pathname === menu.path;
+
+                // 로그아웃 메뉴일 경우 별도 처리
+                if (menu.path === PATH.LOGOUT) {
+                    return (
+                        <ListStyle key={index}>
+                            <button onClick={() => handleLogout(navigate)} style={{ color: isActive ? "#2DB400" : "inherit", background: 'none', border: 'none', cursor: 'pointer' }}>
+                                <a style={{fontSize : '18px'}}>{menu.iconName} {menu.title}</a>
+                            </button>
+                        </ListStyle>
+                    );
+                }
 
                 return (
                     <ListStyle key={index}>
