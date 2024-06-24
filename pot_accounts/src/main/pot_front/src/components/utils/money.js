@@ -4,7 +4,7 @@ const getMoneyUnit = (money) => {
         MONEY: /\B(?=(\d{3})+(?!\d))/g, // 천 단위로 쉼표를 추가하기 위한 정규식
     };
 
-    const newMoney = money.toString().replace(REGEX.MONEY, ",");
+    const newMoney = Number(money).toString().replace(REGEX.MONEY, ",");
     return newMoney;
 };
 
