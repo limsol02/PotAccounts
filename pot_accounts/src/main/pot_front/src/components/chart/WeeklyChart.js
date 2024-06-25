@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { useQuery } from '@tanstack/react-query';
+import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
+import {Bar} from 'react-chartjs-2';
+import {useQuery} from '@tanstack/react-query';
 import getMoneyUnit from "../utils/money";
-import  API  from '../../config/apiConfig'
+import API from '../../config/apiConfig'
 import QUERYKEYS from '../utils/querykey'
-import { useParams } from "react-router-dom";
-import { loadWeeklyCompareAnalyze } from "../../api/accounts";
-import { payWeekly, incomeWeekly} from "../../api/main.js";
-import { getDateRangeUnit } from "../utils/date";
+import {useParams} from "react-router-dom";
+import {loadWeeklyCompareAnalyze} from "../../api/accounts";
+import {payWeekly, incomeWeekly} from "../../api/main.js";
+import {getDateRangeUnit} from "../utils/date";
 
 ChartJS.register(
     CategoryScale,
@@ -47,9 +47,11 @@ const WeeklyChart = (props) => {
             },
             tooltip: {
                 callbacks: {
-                    label: function(context) {
+                    label: function (context) {
                         //console.log("Tooltip context:", context); // Debugging
-                        return `${getMoneyUnit(context.raw)}원`;
+                        const value = context.raw || 0;
+                        return `${getMoneyUnit(value)}원`;
+                        //return `${getMoneyUnit(context.raw)}원`;
                     },
                 },
             },
@@ -76,19 +78,31 @@ const WeeklyChart = (props) => {
         },
     };
 
-    // 부트에서 주간별 데이터 가져오기
-    const { bookId } = useParams();
-    const queryFn = () =>
-        loadWeeklyCompareAnalyze({
+    // // 부트에서 주간별 데이터 가져오기
+    // const { bookId } = useParams();
+    // const queryFn = () =>
+    //     loadWeeklyCompareAnalyze({
+    //         id: bookId ? +bookId : 0,
+    //         year: new Date().getFullYear(),
+    //         month: new Date().getMonth() + 1,
+    //         startDay: 1,
+    //     });
+    //
+    // const { data: weekData } = useQuery({
+    //     queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE],
+    //     queryFn,
+    // });
+
+    // 주간별 데이터 가져오기
+    const {bookId} = useParams();
+    const {data: weekData} = useQuery({
+        queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE, bookId],
+        queryFn: () => loadWeeklyCompareAnalyze({
             id: bookId ? +bookId : 0,
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
             startDay: 1,
-        });
-
-    const { data: weekData } = useQuery({
-        queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE],
-        queryFn,
+        }),
     });
 
     // 데이터 작업
@@ -131,7 +145,7 @@ const WeeklyChart = (props) => {
             fetchPayWeekly(mem.id);
             fetchIncomeWeekly(mem.id);
         }
-    },[])
+    }, [])
 
     const startDay = 1;
     const endDay = 7;
@@ -157,12 +171,12 @@ const WeeklyChart = (props) => {
             };
         }
 
-        const incomeData = labels.map((label, index) => {
+        const incomeData = labels.map((_, index) => {
             const weekIncome = weekData.income.find(income => income.week === index + 1);
             return weekIncome ? weekIncome.amount : 0;
         });
 
-        const expenseData = labels.map((label, index) => {
+        const expenseData = labels.map((_, index) => {
             const weekExpense = weekData.expenses.find(expense => expense.week === index + 1);
             return weekExpense ? weekExpense.amount : 0;
         });
@@ -172,12 +186,12 @@ const WeeklyChart = (props) => {
             datasets: [
                 {
                     label: '수입',
-                    data: incomeData.map(getMoneyUnit),
+                    data: incomeData(getMoneyUnit),
                     backgroundColor: "rgba(61, 123, 247, 0.5)",
                 },
                 {
                     label: '지출',
-                    data: expenseData.map(getMoneyUnit),
+                    data: expenseData(getMoneyUnit),
                     backgroundColor: "rgba(239, 67, 82, 0.5)",
                 },
             ],
@@ -188,21 +202,19 @@ const WeeklyChart = (props) => {
     const [sum, setSum] = useState(0);
 
     useEffect(() => {
-        if (weekData?.compare) {
-            const totalSum = weekData.compare.reduce((acc, cur) => acc + Number(cur.value ? cur.value : 0), 0);
+        if (Array.isArray(weekData?.compare && weekData.compare.length >= 2)) {
+            const totalSum = weekData.compare.reduce((acc, cur) => acc + (Number(cur.value) || 0), 0);
             setSum(totalSum);
 
             const diffValue = weekData.compare[1]
-                ? weekData.compare[1].value - weekData.compare[0].value
+                ? (Number(weekData.compare[1].value) || 0) - (Number(weekData.compare[0].value) || 0)
                 : null;
             setDiff(diffValue);
         }
     }, [weekData]);
 
     return (
-        <div>
-            <Bar options={options} data={data} height={100}/>
-        </div>
+        <Bar options={options} data={data} height={100}/>
     )
 }
 
