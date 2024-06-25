@@ -72,7 +72,7 @@ const Mainlayout = () => {
                         <MainSpan>님</MainSpan>
                         <p style={{fontSize: '1.5em', color: '#555', marginTop:'23px'}}>{greetingMessage}</p>
                         {/*<p style={{fontSize: '1.2em', color: '#777'}}>{encouragementMessage}</p>*/}
-                        {/*<p style={{fontSize: '1em', color: '#AAA'}}>현재 날짜: {currentDate}</p>*/}
+                        {/* <p style={{fontSize: '1em', color: '#AAA'}}>현재 날짜: {currentDate}</p> */}
                         {/*<p style={{fontSize: '1em', color: '#AAA'}}>현재 시간: {currentTime}</p>*/}
                     </Container>
 

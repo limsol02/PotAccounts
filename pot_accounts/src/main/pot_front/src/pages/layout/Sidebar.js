@@ -3,21 +3,11 @@ import PATH from "./data/path";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import navigation from "./data/navigation";
 import { ListStyle, SidebarWrap, SubListStyle, SubWrap } from "./Layoutstyles";
+import { handleLogout } from "../../api/accounts";
 
 const Sidebar = () => {
     const location = useLocation();
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        if (window.confirm("로그아웃 하시겠습니까?")){
-            sessionStorage.removeItem('mem'); // 세션에서 사용자 정보 제거
-            navigate(PATH.LOGIN);  // 로그인 페이지로 리디렉션
-        }else{
-            alert("로그아웃이 취소되었습니다.")
-        }
-        //alert("세션해제")
-    };
-
 
     return (
         <SidebarWrap>
@@ -28,8 +18,8 @@ const Sidebar = () => {
                 if (menu.path === PATH.LOGOUT) {
                     return (
                         <ListStyle key={index}>
-                            <button onClick={handleLogout} style={{ color: isActive ? "#2DB400" : "inherit", background: 'none', border: 'none', cursor: 'pointer' }}>
-                                {menu.iconName} {menu.title}
+                            <button onClick={() => handleLogout(navigate)} style={{ color: isActive ? "#2DB400" : "inherit", background: 'none', border: 'none', cursor: 'pointer' }}>
+                                <a style={{fontSize : '18px'}}>{menu.iconName} {menu.title}</a>
                             </button>
                         </ListStyle>
                     );

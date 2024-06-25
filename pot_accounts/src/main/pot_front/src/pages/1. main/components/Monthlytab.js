@@ -14,9 +14,9 @@ const Monthlytab = () => {
                 <FontAwesomeIcon icon={faCalendar}/>
                 <p>월별분석</p>
             </div>
-            <div className="chart-form">
-                <MonthlyChart/>
-            </div>
+
+            <MonthlyChart className="chart-form"/>
+
         </div>
     
     )
