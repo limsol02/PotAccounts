@@ -5,6 +5,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './styles/style.scss'
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 // 프론트 최종 루트
 const queryClient = new QueryClient();

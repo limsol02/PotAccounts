@@ -7,6 +7,7 @@ import getMoneyUnit from "../utils/money";
 import QUERYKEYS from '../utils/querykey'
 import { useParams } from "react-router-dom";
 import { loadMonthRecord } from "../../api/accounts";
+import { payMonth, incomeMonth } from "../../api/main";
 
 ChartJS.register(
     CategoryScale,
@@ -28,6 +29,17 @@ function getMonthLabel(monthIndex) {
 
 // 월별차트
 const MonthlyChart = (props) => {
+    // 지출 데이터
+    const [payMonth01, setPayMonth01] = useState(0);
+    const [payMonth02, setPayMonth02] = useState(0);
+    const [payMonth03, setPayMonth03] = useState(0);
+
+
+    // 수입 데이터
+    const [incomeMonth01 , setIncomeMonth01] = useState(0);
+    const [incomeMonth02 , setIncomeMonth02] = useState(0);
+    const [incomeMonth03 , setIncomeMonth03] = useState(0);
+
     const {
         datasetIdKey,
         type,
@@ -92,6 +104,67 @@ const MonthlyChart = (props) => {
         }),
     });
 
+    let payArr = [];
+    let incomeArr = [];
+
+    useEffect(() => {
+        const fetchPayMonth = async (id) => {
+            const payData = await payMonth(id);
+
+            if (payData) {
+                if (payData.payMonth01) {
+                    const payTotal01 = payData.payMonth01.reduce((sum, payment) => sum + payment.pay_money, 0);
+                    setPayMonth01(payTotal01);
+                    payArr[2] = payTotal01; // 6월 데이터
+                }
+
+                if (payData.payMonth02) {
+                    const payTotal02 = payData.payMonth02.reduce((sum, payment) => sum + payment.pay_money, 0);
+                    setPayMonth02(payTotal02);
+                    payArr[1] = payTotal02; // 5월 데이터
+                }
+
+                if (payData.payMonth03) {
+                    const payTotal03 = payData.payMonth03.reduce((sum, payment) => sum + payment.pay_money, 0);
+                    setPayMonth03(payTotal03);
+                    payArr[0] = payTotal03; // 4월 데이터
+                }
+            }
+        };
+
+        const fetchIncomeMonth = async (id) => {
+            const incomeData = await incomeMonth(id);
+
+            if(incomeData) {
+                if(incomeData.incomeMonth01){
+                    const incomeTotal01 = incomeData.incomeMonth01.reduce((sum, income) => sum + income.income_money, 0);
+                    incomeArr[2] = incomeTotal01;
+                }
+                if(incomeData.incomeMonth02){
+                    const incomeTotal02 = incomeData.incomeMonth02.reduce((sum, income) => sum + income.income_money, 0);
+                    incomeArr[1] = incomeTotal02;
+                }
+                if(incomeData.incomeMonth03){
+                    const incomeTotal03 = incomeData.incomeMonth03.reduce((sum, income) => sum + income.income_money, 0);
+                    incomeArr[0] = incomeTotal03;
+                }
+            }
+        }
+
+
+        const storedMem = sessionStorage.getItem('mem');
+        if (storedMem) {
+            const mem = JSON.parse(storedMem);
+            fetchPayMonth(mem.id);
+            fetchIncomeMonth(mem.id);
+        }
+    }, []);
+
+    // console.log("PayMonth01:", payMonth01); // 콘솔 로그 추가
+    // console.log("PayMonth02:", payMonth02); // 콘솔 로그 추가
+    // console.log("PayMonth03:", payMonth03); // 콘솔 로그 추가
+    // console.log(payArr)
+
     const data = useMemo(() => {
         if (!monthData || !monthData.income || !monthData.expenses) {
             return {
@@ -99,13 +172,15 @@ const MonthlyChart = (props) => {
                 datasets: [
                     {
                         label: '수입',
-                        data: [0,0,0], 
-                        backgroundColor: "rgba(239, 67, 82, 0.5)",
+                        // 내가 데이터 꼽아넣을곳
+                        data: incomeArr,
+                        backgroundColor: "rgba(61, 123, 247, 0.5)",
                     },
                     {
                         label: '지출',
-                        data: [0,0,0], 
-                        backgroundColor: "rgba(61, 123, 247, 0.5)",
+                        // 내가 데이터 꼽아넣을곳
+                        data: payArr,
+                        backgroundColor: "rgba(239, 67, 82, 0.5)",
 
                     },
                 ],

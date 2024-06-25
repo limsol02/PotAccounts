@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { useQuery } from '@tanstack/react-query';
+import {Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
+import {Bar} from 'react-chartjs-2';
+import {useQuery} from '@tanstack/react-query';
 import getMoneyUnit from "../utils/money";
-import  API  from '../../config/apiConfig'
+import API from '../../config/apiConfig'
 import QUERYKEYS from '../utils/querykey'
-import { useParams } from "react-router-dom";
-import { loadWeeklyCompareAnalyze } from "../../api/accounts";
-import { getDateRangeUnit } from "../utils/date";
+import {useParams} from "react-router-dom";
+import {loadWeeklyCompareAnalyze} from "../../api/accounts";
+import {payWeekly, incomeWeekly} from "../../api/main.js";
+import {getDateRangeUnit} from "../utils/date";
 
 ChartJS.register(
     CategoryScale,
@@ -20,8 +21,13 @@ ChartJS.register(
     Legend,
 );
 
+
 // 주간별차트
 const WeeklyChart = (props) => {
+    const [payWeeklyData, setPayWeeklyData] = useState([0, 0, 0, 0, 0]); // Initialize with 5 weeks
+    const [incomeWeeklyData, setIncomeWeeklyData] = useState([0, 0, 0, 0, 0]); // Initialize with 5 weeks
+
+
     const {
         datasetIdKey,
         type,
@@ -41,9 +47,11 @@ const WeeklyChart = (props) => {
             },
             tooltip: {
                 callbacks: {
-                    label: (context) => {
+                    label: function (context) {
+                        //console.log("Tooltip context:", context); // Debugging
                         const value = context.raw || 0;
                         return `${getMoneyUnit(value)}원`;
+                        //return `${getMoneyUnit(context.raw)}원`;
                     },
                 },
             },
@@ -70,9 +78,24 @@ const WeeklyChart = (props) => {
         },
     };
 
+    // // 부트에서 주간별 데이터 가져오기
+    // const { bookId } = useParams();
+    // const queryFn = () =>
+    //     loadWeeklyCompareAnalyze({
+    //         id: bookId ? +bookId : 0,
+    //         year: new Date().getFullYear(),
+    //         month: new Date().getMonth() + 1,
+    //         startDay: 1,
+    //     });
+    //
+    // const { data: weekData } = useQuery({
+    //     queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE],
+    //     queryFn,
+    // });
+
     // 주간별 데이터 가져오기
-    const { bookId } = useParams();
-    const { data: weekData } = useQuery({
+    const {bookId} = useParams();
+    const {data: weekData} = useQuery({
         queryKey: [QUERYKEYS.LOAD_WEEKLY_COMPARE_ANALYZE, bookId],
         queryFn: () => loadWeeklyCompareAnalyze({
             id: bookId ? +bookId : 0,
@@ -82,21 +105,66 @@ const WeeklyChart = (props) => {
         }),
     });
 
+    // 데이터 작업
+    const payArr = [0, 0, 0, 0, 0];
+    const incomeArr = [0, 0, 0, 0, 0];
+    useEffect(() => {
+        // 지출
+        const fetchPayWeekly = async (id) => {
+            const payData = await payWeekly(id);
+            if (payData) {
+                payData.forEach(item => {
+                    const weekIndex = parseInt(item.week_label.replace('주차', '')) - 1;
+                    //console.log("주차!!!!!!!!!"+weekIndex)
+                    if (weekIndex >= 0 && weekIndex < payArr.length) {
+                        payArr[weekIndex] = item.pay_money;
+                        //console.log("금액!!!!!!!!!"+item.pay_money)
+                    }
+                });
+                setPayWeeklyData(payArr);
+            }
+        }
+        // 수입
+        const fetchIncomeWeekly = async (id) => {
+            const incomeData = await incomeWeekly(id);
+            if (incomeData) {
+                incomeData.forEach(item => {
+                    const weekIndex = parseInt(item.week_label.replace('주차', '')) - 1;
+                    if (weekIndex >= 0 && weekIndex < incomeArr.length) {
+                        incomeArr[weekIndex] = item.income_money;
+                        //console.log("수입금액!!!!!!!!!"+item.income_money)
+                    }
+                });
+                setIncomeWeeklyData(incomeArr);
+            }
+        }
+        // 함수실행
+        const storedMem = sessionStorage.getItem('mem');
+        if (storedMem) {
+            const mem = JSON.parse(storedMem);
+            fetchPayWeekly(mem.id);
+            fetchIncomeWeekly(mem.id);
+        }
+    }, [])
+
+    const startDay = 1;
+    const endDay = 7;
+
     const labels = ["1째주", "2째주", "3째주", "4째주", "5째주"];
 
     const data = useMemo(() => {
-        if (!weekData || !Array.isArray(weekData.income) || !Array.isArray(weekData.expenses)) {
+        if (!weekData || !weekData.income || !weekData.expenses) {
             return {
                 labels,
                 datasets: [
                     {
                         label: '수입',
-                        data: [0, 0, 0, 0, 0],
+                        data: incomeArr,
                         backgroundColor: "rgba(61, 123, 247, 0.5)",
                     },
                     {
                         label: '지출',
-                        data: [0, 0, 0, 0, 0],
+                        data: payArr,
                         backgroundColor: "rgba(239, 67, 82, 0.5)",
                     },
                 ],
